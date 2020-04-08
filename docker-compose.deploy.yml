@@ -1,0 +1,48 @@
+version: "3.2"
+services:
+  db:
+    image: postgres:11
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    networks:
+      - internal-network
+
+  pgadmin:
+    env_file:
+      - .env
+    image: dpage/pgadmin4
+    volumes:
+      - ./pgadmin:/var/lib/pgadmin
+    ports:
+      - "${COMPOSE_PGADMIN_PORT}:80"
+    restart: "no"
+    depends_on:
+      - db
+    networks:
+      - internal-network
+      - external-network
+
+  app:
+    image: "${COMPOSE_APP_IMAGE}"
+    restart: "no"
+    command: sh -c "python manage.py collectstatic --no-input && python manage.py migrate --no-input && exec gunicorn backend.wsgi:application --access-logfile - --bind 0.0.0.0:8000 --workers 2"
+    env_file:
+      - .env
+    volumes:
+      - '/var/www/html/vimedo:/code/static'
+      - './sqlite-db/:/code/db'
+    ports:
+      - "${COMPOSE_APP_PORT}:8000"
+    depends_on:
+      - db
+    networks:
+      - internal-network
+      - external-network
+
+networks:
+  internal-network:
+    internal: true
+  external-network:
