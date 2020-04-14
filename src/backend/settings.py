@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 from configurations import Configuration, values
+from django.utils.log import DEFAULT_LOGGING
+import logging.config
+
 
 
 class BaseConfiguration(Configuration):
@@ -35,6 +38,8 @@ class BaseConfiguration(Configuration):
         'django.contrib.messages',
         'django.contrib.staticfiles',
         'rest_framework',
+        'rest_framework.authtoken',
+        'drf_yasg',
         'core',
     ]
 
@@ -46,6 +51,7 @@ class BaseConfiguration(Configuration):
         'django.contrib.auth.middleware.AuthenticationMiddleware',
         'django.contrib.messages.middleware.MessageMiddleware',
         'django.middleware.clickjacking.XFrameOptionsMiddleware',
+        # 'core.middleware.SimpleMiddleware',
     ]
 
     ROOT_URLCONF = 'backend.urls'
@@ -113,11 +119,77 @@ class BaseConfiguration(Configuration):
         # or allow read-only access for unauthenticated users.
         'DEFAULT_PERMISSION_CLASSES': [
             'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-        ]
+        ],
+        'DEFAULT_AUTHENTICATION_CLASSES': [
+            'rest_framework.authentication.TokenAuthentication',
+        ],
     }
 
-    def __init__(self):
-        print(f'Using {self.__class__.__name__} config')
+    SWAGGER_SETTINGS = {
+        'SECURITY_DEFINITIONS': {
+            'DRF Token': {
+                'type': 'apiKey',
+                'name': 'Authorization',
+                'in': 'header'
+            }
+        }
+    }
+
+    # Logging
+
+    LOGGING_CONFIG = None
+    LOGLEVEL = values.Value('DEBUG')
+
+    logging.config.dictConfig({
+        'version': 1,
+        'disable_existing_loggers': False,
+        'formatters': {
+            'default': {
+                # exact format is not important, this is the minimum information
+                'format': '%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
+            },
+            'django.server': DEFAULT_LOGGING['formatters']['django.server'],
+        },
+        'handlers': {
+            # console logs to stderr
+            'console': {
+                'class': 'logging.StreamHandler',
+                'formatter': 'default',
+            },
+            # Add Handler for Sentry for `warning` and above
+            # 'sentry': {
+            #     'level': 'WARNING',
+            #     'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
+            # },
+            'django.server': DEFAULT_LOGGING['handlers']['django.server'],
+        },
+        'loggers': {
+            # default for all undefined Python modules
+            '': {
+                'level': 'WARNING',
+                'handlers': ['console'], # 'sentry'],
+            },
+            # Our application code
+            'app': {
+                'level': str(LOGLEVEL).upper(),
+                'handlers': ['console'], #, 'sentry'],
+                # Avoid double logging because of root logger
+                'propagate': False,
+            },
+            # Prevent noisy modules from logging to Sentry
+            'noisy_module': {
+                'level': 'ERROR',
+                'handlers': ['console'],
+                'propagate': False,
+            },
+            # Default runserver request logging
+            'django.server': DEFAULT_LOGGING['loggers']['django.server'],
+        },
+    })
+
+
+def __init__(self):
+    print(f'Using {self.__class__.__name__} config')
 
 
 class Dev(BaseConfiguration):
@@ -128,7 +200,7 @@ class Dev(BaseConfiguration):
 
 class Test(BaseConfiguration):
     DEBUG = True
-    
+
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
