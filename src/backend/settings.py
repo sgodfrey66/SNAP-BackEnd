@@ -16,7 +16,6 @@ from django.utils.log import DEFAULT_LOGGING
 import logging.config
 
 
-
 class BaseConfiguration(Configuration):
     # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -37,15 +36,21 @@ class BaseConfiguration(Configuration):
         'django.contrib.sessions',
         'django.contrib.messages',
         'django.contrib.staticfiles',
+        'django_extensions',
         'rest_framework',
         'rest_framework.authtoken',
+        'corsheaders',
         'drf_yasg',
         'core',
+        'agency',
+        'client',
+        'survey',
     ]
 
     MIDDLEWARE = [
         'django.middleware.security.SecurityMiddleware',
         'django.contrib.sessions.middleware.SessionMiddleware',
+        'corsheaders.middleware.CorsMiddleware',
         'django.middleware.common.CommonMiddleware',
         'django.middleware.csrf.CsrfViewMiddleware',
         'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -74,15 +79,7 @@ class BaseConfiguration(Configuration):
 
     WSGI_APPLICATION = 'backend.wsgi.application'
 
-    # Database
-    # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        }
-    }
+    DATABASES = values.DatabaseURLValue()
 
     # Password validation
     # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -124,6 +121,15 @@ class BaseConfiguration(Configuration):
             'rest_framework.authentication.TokenAuthentication',
         ],
     }
+
+    CORS_ORIGIN_ALLOW_ALL = True
+    CORS_ALLOW_CREDENTIALS = True
+    CORS_ORIGIN_WHITELIST = [
+        'http://localhost:3030',
+    ]
+    CORS_ORIGIN_REGEX_WHITELIST = [
+        'http://localhost:3030',
+    ]
 
     SWAGGER_SETTINGS = {
         'SECURITY_DEFINITIONS': {
@@ -167,12 +173,12 @@ class BaseConfiguration(Configuration):
             # default for all undefined Python modules
             '': {
                 'level': 'WARNING',
-                'handlers': ['console'], # 'sentry'],
+                'handlers': ['console'],  # 'sentry'],
             },
             # Our application code
             'app': {
                 'level': str(LOGLEVEL).upper(),
-                'handlers': ['console'], #, 'sentry'],
+                'handlers': ['console'],  # , 'sentry'],
                 # Avoid double logging because of root logger
                 'propagate': False,
             },
@@ -187,9 +193,8 @@ class BaseConfiguration(Configuration):
         },
     })
 
-
-def __init__(self):
-    print(f'Using {self.__class__.__name__} config')
+    def __init__(self):
+        print(f'Using {self.__class__.__name__} config')
 
 
 class Dev(BaseConfiguration):
@@ -215,7 +220,6 @@ class Staging(BaseConfiguration):
     STATIC_ROOT = "/host/static/"
     MEDIA_ROOT = "/host/uploads/"
     ALLOWED_HOSTS = ['*']
-    DATABASES = values.DatabaseURLValue()
 
     SECRET_KEY = values.SecretValue()
 

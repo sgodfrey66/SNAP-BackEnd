@@ -1,3 +1,11 @@
+# Starting dev environment
+
+Use this command to start db
+
+```
+docker-compose -f docker-compose/docker-compose.dev.yml up -d
+```
+
 # Per-object permisssions
 
 https://www.youtube.com/watch?v=90T5D4KUjWI
@@ -19,7 +27,6 @@ logging.getLogger('app.[XYZ]').error('app error')
 ```
 
 Set LOGLEVEL environment variable to control app-level logger verbosity.
-
 
 # Testing api
 

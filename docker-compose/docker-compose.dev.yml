@@ -1,0 +1,32 @@
+version: "3.2"
+services:
+    db:
+        image: postgres:11
+        restart: always
+        env_file:
+            - ../.env
+        volumes:
+            - ./db:/var/lib/postgresql/data
+        # networks:
+        #     - internal-network
+        ports:
+            - "5432:5432"
+#     pgadmin:
+#         env_file:
+#             - ../.env
+#         image: dpage/pgadmin4
+#         volumes:
+#             - ./pgadmin:/var/lib/pgadmin
+#         ports:
+#             - "${COMPOSE_PGADMIN_PORT}:80"
+#         restart: "no"
+#         depends_on:
+#             - db
+#         networks:
+#             - internal-network
+#             - external-network
+
+# networks:
+#     internal-network:
+#         internal: true
+#     external-network:

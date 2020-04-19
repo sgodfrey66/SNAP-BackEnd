@@ -1,6 +1,8 @@
+.env
 *.sqlite3
 .vscode
 /docker-compose/*/data
+/docker-compose/*/
 
 
 ### Django ###
