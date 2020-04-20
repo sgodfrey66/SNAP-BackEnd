@@ -1,12 +1,12 @@
 from django.db import models
-from core.models import PrimaryModel
+from core.models import ObjectRoot
 
 
-class Client(PrimaryModel):
+class Client(ObjectRoot):
     class Meta:
         db_table = 'client'
     first_name = models.CharField(max_length=64)
-    middle_name = models.CharField(max_length=64, default='')
+    middle_name = models.CharField(max_length=64, default='', blank=True)
     last_name = models.CharField(max_length=64)
     dob = models.DateField()
 

@@ -6,7 +6,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 
-class PrimaryModel(UUIDModel, SoftDeletableModel):
+class ObjectRoot(UUIDModel, SoftDeletableModel):
     created_by = models.ForeignKey(
         User, on_delete=models.PROTECT, blank=True, null=True)
     created_at = AutoCreatedField(_('created_at'))

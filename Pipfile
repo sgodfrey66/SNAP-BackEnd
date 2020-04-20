@@ -24,3 +24,6 @@ django-cors-headers = "*"
 
 [requires]
 python_version = "3.7"
+
+[scripts]
+ssh = "ssh -i /home/pgorecki/.ssh/home-cta.pem ubuntu@home.ctagroup.org"

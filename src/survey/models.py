@@ -1,12 +1,11 @@
 from django.db import models
 from django.contrib.postgres.fields import JSONField, ArrayField
-from core.models import PrimaryModel
-from core.fields import EnumCharField
+from core.models import ObjectRoot
 from client.models import Client
 from survey.enums import QuestionCategory
 
 
-class Survey(PrimaryModel):
+class Survey(ObjectRoot):
     class Meta:
         db_table = 'survey'
     name = models.CharField(max_length=64)
@@ -16,23 +15,24 @@ class Survey(PrimaryModel):
         return self.name
 
 
-class Question(PrimaryModel):
+class Question(ObjectRoot):
     title = models.CharField(max_length=64)
-    description = models.TextField()
-    category = EnumCharField(enum=QuestionCategory,
-                             max_length=32, default=QuestionCategory.TEXT)
-    options = ArrayField(models.CharField(max_length=64, blank=True))
+    description = models.TextField(blank=True)
+    category = models.CharField(choices=QuestionCategory.choices,
+                                max_length=32, default=QuestionCategory.TEXT)
+    options = ArrayField(models.CharField(
+        max_length=64), null=True, blank=True)
     other = models.BooleanField()
     refusable = models.BooleanField()
-    rows = models.IntegerField()
-    columns = JSONField()
+    rows = models.IntegerField(null=True, blank=True)
+    columns = JSONField(null=True, blank=True)
     public = models.BooleanField()
 
     def __str__(self):
         return self.title
 
 
-class Response(PrimaryModel):
+class Response(ObjectRoot):
     client = models.ForeignKey(
         Client, related_name='responses', on_delete=models.PROTECT
     )
@@ -41,10 +41,11 @@ class Response(PrimaryModel):
     )
 
 
-class Answer(PrimaryModel):
+class Answer(models.Model):
     response = models.ForeignKey(
         Response, related_name='answers', on_delete=models.PROTECT
     )
     question = models.ForeignKey(
         Question, related_name='answers', on_delete=models.PROTECT
     )
+    value = models.CharField(max_length=256)

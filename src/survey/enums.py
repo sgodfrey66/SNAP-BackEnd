@@ -1,10 +1,10 @@
-from enum import Enum
+from django.db import models
 
 
-class QuestionCategory(Enum):
-    CHOICE = "choice"
-    CURRENCY = "currency"
-    DATE = "date"
-    GRID = "grid"
-    NUMBER = "number"
-    TEXT = "text"
+class QuestionCategory(models.TextChoices):
+    CHOICE = "choice", "choice"
+    CURRENCY = "currency", "currency"
+    DATE = "date", "date"
+    GRID = "grid", "grid"
+    NUMBER = "number", "number"
+    TEXT = "text", "text"

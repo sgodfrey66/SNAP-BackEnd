@@ -1,11 +1,12 @@
 from django.db import models
-from core.models import PrimaryModel
+from core.models import ObjectRoot
 from client.models import Client
 
 
-class Agency(PrimaryModel):
+class Agency(ObjectRoot):
     class Meta:
         db_table = 'agency'
+        verbose_name_plural = 'Agencies'
     name = models.CharField(max_length=64)
 
     def __str__(self):
