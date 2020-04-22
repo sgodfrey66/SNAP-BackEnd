@@ -17,13 +17,15 @@ dj-database-url = "*"
 drf-yasg = "*"
 django-cors-headers = "*"
 "psycopg2" = "*"
+factory-boy = "*"
 
 [dev-packages]
 "autopep8" = "*"
 "flake8" = "*"
+jupyter = "*"
 
 [requires]
 python_version = "3.7"
 
 [scripts]
-ssh = "ssh -i /home/pgorecki/.ssh/home-cta.pem ubuntu@home.ctagroup.org"
+ssh = "ssh -i /home/pgorecki/.ssh/snap.pem ubuntu@gsnap.ctagroup.org"

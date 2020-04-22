@@ -206,13 +206,6 @@ class Dev(BaseConfiguration):
 class Test(BaseConfiguration):
     DEBUG = True
 
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': ":memory:",
-        }
-    }
-
 
 class Staging(BaseConfiguration):
     DEBUG = False

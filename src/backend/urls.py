@@ -13,6 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+import rest_framework.urls
 from django.conf.urls import url, include
 from django.contrib import admin
 from django.urls import path, re_path
@@ -20,25 +21,27 @@ from rest_framework import permissions, routers, serializers, viewsets
 from rest_framework.authtoken.views import obtain_auth_token
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+import client.viewsets
 
 import core.views
 
 
 schema_view = get_schema_view(
-   openapi.Info(
+    openapi.Info(
         title="GEORGIA API",
         default_version='v1',
         #   description="Test description",
         #   terms_of_service="https://www.google.com/policies/terms/",
         #   contact=openapi.Contact(email="contact@snippets.local"),
         #   license=openapi.License(name="BSD License"),
-   ),
-   public=True,
-   permission_classes=(permissions.AllowAny,),
+    ),
+    public=True,
+    permission_classes=(permissions.AllowAny,),
 )
 
 
 router = routers.DefaultRouter()
+router.register('clients', client.viewsets.ClientViewset, basename='client')
 # router.register(r'health', core.views.HealthViewSet, basename='health')
 # router.register(r'users/me', core.views.UsersMe, basename='users__me')
 # router.register(r'users/auth', obtain_auth_token, basename='api_token_auth')
@@ -50,12 +53,11 @@ urlpatterns = [
 
     path('health/', core.views.HealthViewSet.as_view(), name='health'),
 
-    re_path('swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
-    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    re_path('swagger(?P<format>\.json|\.yaml)$',
+            schema_view.without_ui(cache_timeout=0), name='schema-json'),
+    path('swagger/', schema_view.with_ui('swagger',
+                                         cache_timeout=0), name='schema-swagger-ui'),
 
     path('admin/', admin.site.urls),
     url(r'^api-auth/', include('rest_framework.urls')),
 ]
-
-
-import rest_framework.urls

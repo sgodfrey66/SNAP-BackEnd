@@ -1,6 +1,6 @@
-from core.models import Client
 from django.contrib.auth.models import User
-from core.models import Agency, AgencyClient
+from agency.models import Agency, AgencyClient
+from client.models import Client
 
 
 def test_client_full_name_1():
