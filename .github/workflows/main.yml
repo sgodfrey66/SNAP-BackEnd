@@ -30,10 +30,6 @@ jobs:
           python-version: 3.7
       - name: Install system libraries
         run: sudo apt-get install python-dev libpq-dev
-      - name: Install postgress
-        uses: harmon758/postgresql-action@v1
-        with:
-          postgresql version: "11"
       - name: Install dependencies
         run: |
           pip install pipenv
