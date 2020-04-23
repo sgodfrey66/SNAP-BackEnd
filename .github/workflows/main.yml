@@ -31,7 +31,7 @@ jobs:
           cd src
           pytest -x
         env:
-          - DATABASE_URL: postgres://postgres@db:5432/postgres
+          - DATABASE_URL: "postgres://postgres@db:5432/postgres"
 # on:
 #     push:
 #       branches:
