@@ -29,8 +29,9 @@ jobs:
         run: |
           pwd
           cd src
-          pytest
-
+          pytest -x
+        env:
+          - DATABASE_URL=postgres://postgres@db:5432/postgres
 # on:
 #     push:
 #       branches:
