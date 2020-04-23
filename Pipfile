@@ -18,6 +18,7 @@ drf-yasg = "*"
 django-cors-headers = "*"
 "psycopg2" = "*"
 factory-boy = "*"
+sentry-sdk = "*"
 
 [dev-packages]
 "autopep8" = "*"

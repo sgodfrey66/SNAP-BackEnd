@@ -1,15 +1,24 @@
 from django.db import models
 from django.contrib.postgres.fields import JSONField, ArrayField
 from core.models import ObjectRoot
+from core.json_yaml_field import JsonYamlField
 from client.models import Client
 from survey.enums import QuestionCategory
+
+
+class SurveyManager(models.Manager):
+    def for_user(self, user):
+        return super().get_queryset().filter(created_by__profile__agency=user.profile.agency)
 
 
 class Survey(ObjectRoot):
     class Meta:
         db_table = 'survey'
     name = models.CharField(max_length=64)
-    definition = JSONField()
+    definition = JsonYamlField()
+    is_public = models.BooleanField(default=False)
+
+    objects = SurveyManager()
 
     def __str__(self):
         return self.name

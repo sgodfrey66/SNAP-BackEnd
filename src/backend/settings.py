@@ -54,9 +54,9 @@ class BaseConfiguration(Configuration):
         'django.middleware.common.CommonMiddleware',
         'django.middleware.csrf.CsrfViewMiddleware',
         'django.contrib.auth.middleware.AuthenticationMiddleware',
+        # 'core.middleware.UserProfileMiddleware',
         'django.contrib.messages.middleware.MessageMiddleware',
         'django.middleware.clickjacking.XFrameOptionsMiddleware',
-        # 'core.middleware.SimpleMiddleware',
     ]
 
     ROOT_URLCONF = 'backend.urls'

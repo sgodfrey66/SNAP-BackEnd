@@ -1,10 +1,12 @@
-class SimpleMiddleware:
+class UserProfileMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
         # One-time configuration and initialization.
 
     def __call__(self, request):
-        pass
+        return self.get_response(request)
+
+        # return response
     #     # Code to be executed for each request before
     #     # the view (and later middleware) are called.
 
@@ -21,8 +23,16 @@ class SimpleMiddleware:
 
     #     return response
 
+    def process_view(self, request, view_func, view_args, view_kwargs):
+        print(request.user)
+        if not hasattr(request.user, 'profile'):
+            print('setting profile')
+        else:
+            print(request.user.profile)
+            request.user.profile = None
 
-    # def process_view(self, request, view_func, view_args, view_kwargs):
+        print('process')
+    #     pass
     #     view_kwargs['foo'] = 1
     #     import inspect
 
