@@ -4,6 +4,8 @@ from core.models import ObjectRoot
 
 class ClientManager(models.Manager):
     def for_user(self, user):
+        if not hasattr(user, 'profile'):
+            return self.none()
         return super().get_queryset().filter(agency_clients__agency=user.profile.agency)
 
 

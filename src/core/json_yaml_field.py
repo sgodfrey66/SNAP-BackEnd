@@ -1,5 +1,5 @@
-from django.contrib.postgres import fields, forms
 import yaml
+from django.contrib.postgres import fields, forms
 from django.utils.translation import gettext_lazy as _
 
 

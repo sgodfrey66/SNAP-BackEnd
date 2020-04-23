@@ -8,7 +8,18 @@ from survey.enums import QuestionCategory
 
 class SurveyManager(models.Manager):
     def for_user(self, user):
+        if not hasattr(user, 'profile'):
+            return self.none()
+
+        print(super().get_queryset().filter(created_by__profile=user.profile))
+        for x in super().get_queryset().filter(created_by__profile=user.profile):
+            print(x.created_by)
+            print(x.created_by.profile.agency)
+
+        # return super().get_queryset().filter(created_by__profile=user.profile)
         return super().get_queryset().filter(created_by__profile__agency=user.profile.agency)
+        # print(qs.query)
+        # return qs
 
 
 class Survey(ObjectRoot):
