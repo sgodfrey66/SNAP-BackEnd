@@ -1,12 +1,6 @@
 from django.db import models
 from core.models import ObjectRoot
-
-
-class ClientManager(models.Manager):
-    def for_user(self, user):
-        if not hasattr(user, 'profile'):
-            return self.none()
-        return super().get_queryset().filter(agency_clients__agency=user.profile.agency)
+from core.managers import AgencyObjectManager
 
 
 class Client(ObjectRoot):
@@ -20,7 +14,7 @@ class Client(ObjectRoot):
     last_name = models.CharField(max_length=64)
     dob = models.DateField()
 
-    objects = ClientManager()
+    objects = AgencyObjectManager()
 
     @property
     def full_name(self):

@@ -39,13 +39,11 @@ schema_view = get_schema_view(
     permission_classes=(permissions.AllowAny,),
 )
 
-
 router = routers.DefaultRouter()
 router.register('clients', client.viewsets.ClientViewset, basename='client')
 router.register('surveys', survey.viewsets.SurveyViewset, basename='survey')
-# router.register(r'health', core.views.HealthViewSet, basename='health')
-# router.register(r'users/me', core.views.UsersMe, basename='users__me')
-# router.register(r'users/auth', obtain_auth_token, basename='api_token_auth')
+router.register('questions', survey.viewsets.QuestionViewset, basename='question')
+router.register('responses', survey.viewsets.ResponseViewset, basename='response')
 
 urlpatterns = [
     url(r'^', include(router.urls)),

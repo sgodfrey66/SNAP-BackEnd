@@ -190,6 +190,10 @@ class BaseConfiguration(Configuration):
             },
             # Default runserver request logging
             'django.server': DEFAULT_LOGGING['loggers']['django.server'],
+            'django.db.backends': {
+                'level': 'DEBUG',
+                'handlers': ['console'],
+            }
         },
     })
 
