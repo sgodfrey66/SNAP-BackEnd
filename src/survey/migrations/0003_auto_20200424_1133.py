@@ -28,13 +28,14 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='response',
             name='respondent_id',
-            field=models.UUIDField(default=None),
+            field=models.UUIDField(default='00000000-0000-0000-0000-000000000000'),
             preserve_default=False,
         ),
         migrations.AddField(
             model_name='response',
             name='respondent_type',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.PROTECT, related_name='responses', to='contenttypes.ContentType'),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.PROTECT,
+                                    related_name='responses', to='contenttypes.ContentType'),
         ),
         migrations.AlterField(
             model_name='question',
