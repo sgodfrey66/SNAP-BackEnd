@@ -119,7 +119,7 @@ class BaseConfiguration(Configuration):
         'DEFAULT_AUTHENTICATION_CLASSES': [
             'rest_framework.authentication.TokenAuthentication',
         ],
-        'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+        'DEFAULT_PAGINATION_CLASS': 'core.pagination.PageNumberPaginationWithTotalPages',
         'PAGE_SIZE': 100,
     }
 
