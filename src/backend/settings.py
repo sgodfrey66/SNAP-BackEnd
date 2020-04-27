@@ -141,6 +141,8 @@ class BaseConfiguration(Configuration):
         }
     }
 
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
     # Logging
 
     LOGGING_CONFIG = None
