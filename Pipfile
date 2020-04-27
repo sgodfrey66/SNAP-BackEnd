@@ -20,6 +20,7 @@ django-cors-headers = "*"
 factory-boy = "*"
 sentry-sdk = "*"
 pyyaml = "*"
+colorlog = "*"
 
 [dev-packages]
 "autopep8" = "*"
