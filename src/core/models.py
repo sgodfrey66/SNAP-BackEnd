@@ -16,6 +16,7 @@ class ObjectRoot(UUIDModel, SoftDeletableModel):
 
     class Meta:
         abstract = True
+        ordering = ['created_at']
 
 
 class UserProfile(models.Model):

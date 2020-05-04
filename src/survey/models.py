@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.postgres.fields import JSONField, ArrayField
-from model_utils.fields import UUIDField
 from core.models import ObjectRoot
 from core.managers import AgencyObjectManager
 from core.json_yaml_field import JsonYamlField
@@ -12,6 +11,7 @@ from survey.enums import QuestionCategory
 class Survey(ObjectRoot):
     class Meta:
         db_table = 'survey'
+        ordering = ['created_at']
     name = models.CharField(max_length=64)
     definition = JsonYamlField()
     is_public = models.BooleanField(default=False)

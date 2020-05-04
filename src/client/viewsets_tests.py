@@ -28,6 +28,7 @@ def test_get_clients_by_agency_user(client):
 
     response = api_client.get(url)
     assert response.status_code == 200
-    assert len(response.data) == 1
-    assert response.data[0]['object'] == 'Client'
-    assert response.data[0]['first_name'] == 'John'
+    assert len(response.data['results']) == 1
+    assert response.data['results'][0]['object'] == 'Client'
+    assert response.data['results'][0]['first_name'] == 'John'
+    assert response.data['results'][0]['created_by']['id'] == user1.id

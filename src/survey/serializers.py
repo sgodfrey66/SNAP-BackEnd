@@ -1,9 +1,10 @@
-from rest_framework import serializers
-from core.serializers import ContentObjectRelatedField, ObjectSerializer
+from core.serializers import ContentObjectRelatedField, ObjectSerializer, CreatedByReader
 from .models import Survey, Question, Response
 
 
 class SurveyReader(ObjectSerializer):
+    created_by = CreatedByReader()
+
     class Meta:
         model = Survey
         fields = ('id', 'object', 'name', 'definition', 'is_public',
@@ -15,6 +16,8 @@ class SurveyWriter(SurveyReader):
 
 
 class QuestionReader(ObjectSerializer):
+    created_by = CreatedByReader()
+
     class Meta:
         model = Question
         fields = ('id', 'object', 'title', 'description', 'category', 'is_public',
@@ -26,6 +29,7 @@ class QuestionWriter(QuestionReader):
 
 
 class ResponseReader(ObjectSerializer):
+    created_by = CreatedByReader()
     respondent = ContentObjectRelatedField(read_only=True)
 
     class Meta:

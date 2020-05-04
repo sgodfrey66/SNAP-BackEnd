@@ -31,9 +31,10 @@ def test_get_surveys_by_agency_user(client):
 
     response = api_client.get(url)
     assert response.status_code == 200
-    assert len(response.data) == 1
-    assert response.data[0]['object'] == 'Survey'
-    assert response.data[0]['name'] == 'survey1'
+    assert len(response.data['results']) == 1
+    assert response.data['results'][0]['object'] == 'Survey'
+    assert response.data['results'][0]['name'] == 'survey1'
+    assert response.data['results'][0]['created_by']['id'] == user1.id
 
 
 def test_get_questions_by_anonymous():
@@ -52,9 +53,10 @@ def test_get_questions_by_agency_user(client):
     api_client.force_authenticate(user1)
     response = api_client.get(url)
     assert response.status_code == 200
-    assert len(response.data) == 1
-    assert response.data[0]['object'] == 'Question'
-    assert response.data[0]['title'] == 'question1'
+    assert len(response.data['results']) == 1
+    assert response.data['results'][0]['object'] == 'Question'
+    assert response.data['results'][0]['title'] == 'question1'
+    assert response.data['results'][0]['created_by']['id'] == user1.id
 
 
 def test_get_responses_by_anonymous():
@@ -76,7 +78,8 @@ def test_get_responses_by_agency_user(client):
     api_client.force_authenticate(user1)
     response = api_client.get(url)
     assert response.status_code == 200
-    assert len(response.data) == 1
-    assert response.data[0]['object'] == 'Response'
-    assert response.data[0]['respondent']['id'] == str(client1.id)
-    assert response.data[0]['respondent']['object'] == 'Client'
+    assert len(response.data['results']) == 1
+    assert response.data['results'][0]['object'] == 'Response'
+    assert response.data['results'][0]['respondent']['id'] == str(client1.id)
+    assert response.data['results'][0]['respondent']['object'] == 'Client'
+    assert response.data['results'][0]['created_by']['id'] == user1.id

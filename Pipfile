@@ -32,3 +32,4 @@ python_version = "3.7"
 
 [scripts]
 ssh = "ssh -i /home/pgorecki/.ssh/snap.pem ubuntu@gsnap.ctagroup.org"
+deploy = "ssh -i /home/pgorecki/.ssh/snap.pem ubuntu@gsnap.ctagroup.org cd ./snap-src && ./deploy_backend.sh"
