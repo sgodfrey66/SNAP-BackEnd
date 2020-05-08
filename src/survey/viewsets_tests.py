@@ -59,6 +59,60 @@ def test_get_questions_by_agency_user(client):
     assert response.data['results'][0]['created_by']['id'] == user1.id
 
 
+def test_create_survey_by_user1():
+    agency1, agency2, user1, user2, client1, client2 = setup_2_agencies()
+    url = '/surveys/'
+    api_client = APIClient()
+    api_client.force_authenticate(user1)
+    response = api_client.post(url, {
+        'name': 'Survey',
+        'definition': {'items': []},
+    }, format='json')
+    assert response.status_code == 201
+    assert response.data['name'] == 'Survey'
+    assert response.data['created_by']['id'] == user1.id
+
+
+def test_update_own_survey_by_user1():
+    agency1, agency2, user1, user2, client1, client2 = setup_2_agencies()
+    survey = Survey.objects.create(name='Survey A', definition={'items': []}, created_by=user1)
+
+    api_client = APIClient()
+    api_client.force_authenticate(user1)
+    response = api_client.put(f'/surveys/{survey.id}/', {
+        'name': 'Survey B',
+        'definition': {'items': []},
+    }, format='json')
+    assert response.status_code == 200
+    assert response.data['name'] == 'Survey B'
+
+
+def test_create_question_by_user1():
+    agency1, agency2, user1, user2, client1, client2 = setup_2_agencies()
+    url = '/questions/'
+    api_client = APIClient()
+    api_client.force_authenticate(user1)
+    response = api_client.post(url, {
+        'title': 'Question'
+    })
+    assert response.status_code == 201
+    assert response.data['title'] == 'Question'
+    assert response.data['created_by']['id'] == user1.id
+
+
+def test_update_own_question_by_user1():
+    agency1, agency2, user1, user2, client1, client2 = setup_2_agencies()
+    question = Question.objects.create(title='Question A', created_by=user1)
+
+    api_client = APIClient()
+    api_client.force_authenticate(user1)
+    response = api_client.put(f'/questions/{question.id}/', {
+        'title': 'Question B'
+    }, format='json')
+    assert response.status_code == 200
+    assert response.data['title'] == 'Question B'
+
+
 def test_get_responses_by_anonymous():
     agency1, agency2, user1, user2, client1, client2 = setup_2_agencies()
     url = '/responses/'

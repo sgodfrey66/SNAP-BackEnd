@@ -3,7 +3,7 @@ from .models import Survey, Question, Response
 
 
 class SurveyReader(ObjectSerializer):
-    created_by = CreatedByReader()
+    created_by = CreatedByReader(read_only=True)
 
     class Meta:
         model = Survey
@@ -16,7 +16,7 @@ class SurveyWriter(SurveyReader):
 
 
 class QuestionReader(ObjectSerializer):
-    created_by = CreatedByReader()
+    created_by = CreatedByReader(read_only=True)
 
     class Meta:
         model = Question
@@ -29,7 +29,7 @@ class QuestionWriter(QuestionReader):
 
 
 class ResponseReader(ObjectSerializer):
-    created_by = CreatedByReader()
+    created_by = CreatedByReader(read_only=True)
     respondent = ContentObjectRelatedField(read_only=True)
 
     class Meta:

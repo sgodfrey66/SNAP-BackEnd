@@ -13,6 +13,9 @@ class SurveyViewset(ModelViewSet):
     def get_queryset(self):
         return Survey.objects.for_user(self.request.user)
 
+    def perform_create(self, serializer):
+        serializer.save(created_by=self.request.user)
+
 
 class QuestionViewset(ModelViewSet):
     queryset = Question.objects.all()
@@ -22,6 +25,9 @@ class QuestionViewset(ModelViewSet):
 
     def get_queryset(self):
         return Question.objects.for_user(self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(created_by=self.request.user)
 
 
 class ResponseViewset(ModelViewSet):
