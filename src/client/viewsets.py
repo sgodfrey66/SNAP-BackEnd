@@ -12,3 +12,6 @@ class ClientViewset(ModelViewSet):
 
     def get_queryset(self):
         return Client.objects.for_user(self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(created_by=self.request.user)

@@ -4,7 +4,7 @@ from .models import Client
 
 
 class ClientReader(ObjectSerializer):
-    created_by = CreatedByReader()
+    created_by = CreatedByReader(read_only=True)
 
     class Meta:
         model = Client
