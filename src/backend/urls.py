@@ -49,6 +49,7 @@ urlpatterns = [
     url(r'^', include(router.urls)),
     path('users/me/', core.views.UsersMe.as_view(), name='users_me'),
     path('users/auth/', obtain_auth_token, name='users_auth'),
+    path('dashboard/summary', core.views.DashboardSummary.as_view(), name='dashboard_summary'),
 
     path('health/', core.views.HealthViewSet.as_view(), name='health'),
 

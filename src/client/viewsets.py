@@ -16,10 +16,7 @@ class ClientViewset(ModelViewSet):
     permission_classes = [IsAdmin | IsAgencyMember]
 
     def get_queryset(self):
-        if IsAdmin().has_permission(self.request):
-            return Client.objects.all()
-        else:
-            return Client.objects.for_user(self.request.user)
+        return Client.objects.for_user(self.request.user)
 
     def perform_create(self, serializer):
         serializer.save(created_by=self.request.user)
