@@ -20,7 +20,7 @@ class QuestionReader(ObjectSerializer):
 
     class Meta:
         model = Question
-        fields = ('id', 'object', 'title', 'description', 'category', 'is_public',
+        fields = ('id', 'object', 'title', 'description', 'category', 'options', 'other', 'refusable', 'is_public',
                   'created_by', 'created_at', 'modified_at')
 
 

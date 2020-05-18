@@ -113,6 +113,28 @@ def test_update_own_question_by_user1():
     assert response.data['title'] == 'Question B'
 
 
+def test_save_question_to_database():
+    agency1, agency2, user1, user2, client1, client2 = setup_2_agencies()
+    url = '/questions/'
+    api_client = APIClient()
+    api_client.force_authenticate(user1)
+    api_client.post(url, {
+        'title': 'Question',
+        'category': 'choice',
+        'options': ['yes', 'no'],
+        'other': True,
+        'refusable': True,
+        'is_public': True,
+    })
+    q = Question.objects.first()
+    assert q.title == 'Question'
+    assert q.category == 'choice'
+    assert q.options == ['yes', 'no']
+    assert q.other is True
+    assert q.refusable is True
+    assert q.is_public is True
+
+
 def test_get_responses_by_anonymous():
     agency1, agency2, user1, user2, client1, client2 = setup_2_agencies()
     url = '/responses/'
