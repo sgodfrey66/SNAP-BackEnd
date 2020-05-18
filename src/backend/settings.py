@@ -118,6 +118,7 @@ class BaseConfiguration(Configuration):
         ],
         'DEFAULT_AUTHENTICATION_CLASSES': [
             'rest_framework.authentication.TokenAuthentication',
+            'rest_framework.authentication.SessionAuthentication',
         ],
         'DEFAULT_PAGINATION_CLASS': 'core.pagination.PageNumberPaginationWithTotalPages',
         'PAGE_SIZE': 100,
@@ -139,7 +140,9 @@ class BaseConfiguration(Configuration):
                 'name': 'Authorization',
                 'in': 'header'
             }
-        }
+        },
+        'LOGIN_URL': '/admin/login/',
+        'LOGOUT_URL': '/admin/logout/',
     }
 
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

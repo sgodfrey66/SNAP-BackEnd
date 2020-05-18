@@ -6,9 +6,22 @@ class IsAgencyMember(IsAuthenticated):
     Allows access only to authenticated users.
     """
 
-    def has_permission(self, request, view):
+    def has_permission(self, request, view=None):
         try:
             return bool(request.user.profile.agency)
+        except AttributeError:
+            pass
+        return False
+
+
+class IsAdmin(IsAuthenticated):
+    """
+    Allows access only to admins.
+    """
+
+    def has_permission(self, request, view=None):
+        try:
+            return request.user.is_superuser
         except AttributeError:
             pass
         return False
