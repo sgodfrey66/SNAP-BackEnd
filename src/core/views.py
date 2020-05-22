@@ -16,11 +16,11 @@ class HealthViewSet(APIView):
 
     def get(self, request, logger=logging.getLogger('django.server'), format=None):
         logger.error('server error')
-        # logging.getLogger('app').debug('app error')
-        # logging.getLogger('app').info('app error')
-        # logging.getLogger('app').warning('app error')
-        # logging.getLogger('app').error('app error')
-        # logging.getLogger('app').critical('app error')
+        logging.getLogger('app').debug('app debug %d', 1)
+        logging.getLogger('app').info('app info')
+        logging.getLogger('app').warning('app warning')
+        logging.getLogger('app').error('app error')
+        logging.getLogger('app').critical('app critical')
         data = {'status': 'up'}
         return Response(data)
 

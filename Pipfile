@@ -21,6 +21,7 @@ factory-boy = "*"
 sentry-sdk = "*"
 pyyaml = "*"
 colorlog = "*"
+python-json-logger = "*"
 
 [dev-packages]
 "autopep8" = "*"

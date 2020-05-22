@@ -27,6 +27,9 @@ def setup_logging(log_level: str):
                     'CRITICAL': 'red,bold',
                 },
             },
+            'json_formatter': {
+                '()': 'core.ElkJsonFormatter.ElkJsonFormatter',
+            },
             'django.server': DEFAULT_LOGGING['formatters']['django.server'],
         },
         'handlers': {
@@ -42,6 +45,11 @@ def setup_logging(log_level: str):
             'colored_console_db': {
                 'class': 'colorlog.StreamHandler',
                 'formatter': 'colored_db',
+            },
+            'file_handler': {
+                'class': 'logging.FileHandler',
+                'filename': './application.log',
+                'formatter': 'json_formatter',
             },
             # Add Handler for Sentry for `warning` and above
             # 'sentry': {
@@ -59,7 +67,7 @@ def setup_logging(log_level: str):
             # Our application code
             'app': {
                 'level': log_level.upper(),
-                'handlers': ['colored_console'],  # , 'sentry'],
+                'handlers': ['colored_console', 'file_handler'],  # , 'sentry'],
                 # Avoid double logging because of root logger
                 'propagate': False,
             },
