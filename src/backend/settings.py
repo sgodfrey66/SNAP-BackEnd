@@ -121,6 +121,7 @@ class BaseConfiguration(Configuration):
             'rest_framework.authentication.SessionAuthentication',
         ],
         'DEFAULT_PAGINATION_CLASS': 'core.pagination.PageNumberPaginationWithTotalPages',
+        'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
         'PAGE_SIZE': 100,
     }
 

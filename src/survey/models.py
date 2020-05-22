@@ -2,6 +2,9 @@ from django.db import models
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.postgres.fields import JSONField, ArrayField
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
+
 from core.models import ObjectRoot
 from core.managers import AgencyObjectManager
 from core.json_yaml_field import JsonYamlField
@@ -14,6 +17,7 @@ class Survey(ObjectRoot):
         ordering = ['created_at']
     name = models.CharField(max_length=64)
     definition = JsonYamlField()
+    questions = ArrayField(models.UUIDField(), null=True, blank=True)
     is_public = models.BooleanField(default=False)
 
     objects = AgencyObjectManager()
@@ -60,3 +64,18 @@ class Answer(models.Model):
         Question, related_name='answers', on_delete=models.PROTECT
     )
     value = models.CharField(max_length=256)
+
+
+@receiver(pre_save, sender=Survey)
+def save_related_questions(sender, instance, *args, **kwargs):
+
+    def traverse_items(current, question_ids = []):
+        if current.get('type', None) == 'question' and 'question_id' in current:
+            question_ids.append(current['question_id'])
+
+        for item in current.get('items', []):
+            traverse_items(item, question_ids)
+
+        return question_ids
+
+    instance.questions = traverse_items(instance.definition)
