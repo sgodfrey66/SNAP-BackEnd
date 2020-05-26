@@ -1,6 +1,7 @@
 from rest_framework.test import APIClient
 from __tests__.factories import setup_2_agencies
 from survey.models import Survey, Question, Response, Answer
+from client.models import Client
 
 # e2e tests
 
@@ -159,3 +160,31 @@ def test_get_responses_by_agency_user(client):
     assert response.data['results'][0]['respondent']['id'] == str(client1.id)
     assert response.data['results'][0]['respondent']['object'] == 'Client'
     assert response.data['results'][0]['created_by']['id'] == user1.id
+
+
+def test_create_response(client):
+    agency1, agency2, user1, user2, client1, client2 = setup_2_agencies()
+    survey1 = Survey.objects.create(name='survey1', definition={}, created_by=user1)
+    question1 = Question.objects.create(title='question1', created_by=user1)
+    client = Client.objects.create(first_name='John', last_name='Doe', dob='2000-01-01', created_by=user1)
+
+    url = '/responses/'
+    api_client = APIClient()
+    api_client.force_authenticate(user1)
+    data = {
+        'survey': survey1.id,
+        'respondent': {
+            'id': client1.id,
+            'type': 'Client',
+        },
+        'answers': [
+            {
+                'question': question1.id,
+                'value': 'yes',
+            },
+        ],
+    }
+    response = api_client.post(url, data, format='json')
+    print(response.data)
+    assert response.status_code == 201
+    # assert response.survey
