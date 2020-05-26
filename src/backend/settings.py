@@ -149,10 +149,11 @@ class BaseConfiguration(Configuration):
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
     # Logging
+    LOG_FILE = values.Value('./../application.log')
+    LOG_LEVEL = values.Value('DEBUG')
 
-    LOGLEVEL = values.Value('DEBUG')
     LOGGING_CONFIG = None
-    setup_logging(str(LOGLEVEL))
+    setup_logging(str(LOG_LEVEL), str(LOG_FILE))
 
     def __init__(self):
         print(f'Using {self.__class__.__name__} config')

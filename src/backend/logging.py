@@ -3,7 +3,7 @@ import logging.config
 from django.utils.log import DEFAULT_LOGGING
 
 
-def setup_logging(log_level: str):
+def setup_logging(log_level: str, logs_filename: str):
     logging.config.dictConfig({
         'version': 1,
         'disable_existing_loggers': False,
@@ -48,7 +48,7 @@ def setup_logging(log_level: str):
             },
             'file_handler': {
                 'class': 'logging.FileHandler',
-                'filename': './application.log',
+                'filename': logs_filename,
                 'formatter': 'json_formatter',
             },
             # Add Handler for Sentry for `warning` and above

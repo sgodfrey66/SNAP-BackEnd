@@ -1,27 +1,18 @@
-import logging
 from rest_framework import routers, serializers, viewsets
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
-
+from core.logging import logger
 import survey.models
 import client.models
-
-
-logger = logging.getLogger('django.server')
 
 
 class HealthViewSet(APIView):
     permission_classes = (AllowAny, )
 
-    def get(self, request, logger=logging.getLogger('django.server'), format=None):
-        logger.error('server error')
-        logging.getLogger('app').debug('app debug %d', 1)
-        logging.getLogger('app').info('app info')
-        logging.getLogger('app').warning('app warning')
-        logging.getLogger('app').error('app error')
-        logging.getLogger('app').critical('app critical')
+    def get(self, request, format=None):
         data = {'status': 'up'}
+        logger.info('Health check')
         return Response(data)
 
 

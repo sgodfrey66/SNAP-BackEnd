@@ -5,6 +5,7 @@ from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from core.viewsets import ModelViewSet
 from core.permissions import IsAdmin, IsAgencyMember
+from core.logging import RequestLogger
 from .models import Client
 from .serializers import ClientReader, ClientWriter
 
@@ -19,7 +20,16 @@ class ClientViewset(ModelViewSet):
         return Client.objects.for_user(self.request.user)
 
     def perform_create(self, serializer):
-        serializer.save(created_by=self.request.user)
+        instance = serializer.save(created_by=self.request.user)
+        RequestLogger(self.request, instance).info('client created')
+
+    def perform_update(self, serializer):
+        instance = serializer.save()
+        RequestLogger(self.request, instance=instance).info('client updated')
+
+    def perform_destroy(self, instance):
+        instance.destroy()
+        RequestLogger(self.request, instance).info('client destroyed')
 
     @action(detail=False, methods=['get'])
     @swagger_auto_schema(
