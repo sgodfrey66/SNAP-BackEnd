@@ -21,7 +21,7 @@ class ClientViewset(ModelViewSet):
 
     def perform_create(self, serializer):
         instance = serializer.save(created_by=self.request.user)
-        RequestLogger(self.request, instance).info('client created')
+        RequestLogger(self.request, instance=instance).info('client created')
 
     def perform_update(self, serializer):
         instance = serializer.save()

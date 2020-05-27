@@ -61,8 +61,6 @@ class ResponseWriter(ObjectSerializer):
 
     def create(self, validated_data):
         # TODO: check access permissions to survey, questions, respondent
-        print(('vd', validated_data))
-
         response = Response.objects.create(
             survey=validated_data['survey'],
             respondent=validated_data['respondent'],
