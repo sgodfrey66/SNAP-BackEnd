@@ -29,6 +29,14 @@ class QuestionWriter(QuestionReader):
     pass
 
 
+class AnswerReader(ObjectSerializer):
+    question = QuestionReader()
+
+    class Meta:
+        model = Answer
+        fields = ('question', 'value')
+
+
 class AnswerWriter(ObjectSerializer):
     #    response = serializers.ReadOnlyField()
 
@@ -40,10 +48,11 @@ class AnswerWriter(ObjectSerializer):
 class ResponseReader(ObjectSerializer):
     created_by = CreatedByReader(read_only=True)
     respondent = ContentObjectRelatedField(read_only=True)
+    answers = AnswerReader(many=True)
 
     class Meta:
         model = Response
-        fields = ('id', 'object', 'respondent', 'created_by', 'created_at', 'modified_at')
+        fields = ('id', 'object', 'respondent', 'answers', 'created_by', 'created_at', 'modified_at')
 
 
 class ResponseWriter(ObjectSerializer):
@@ -61,6 +70,7 @@ class ResponseWriter(ObjectSerializer):
 
     def create(self, validated_data):
         # TODO: check access permissions to survey, questions, respondent
+        # TODO: add transaction
         response = Response.objects.create(
             survey=validated_data['survey'],
             respondent=validated_data['respondent'],

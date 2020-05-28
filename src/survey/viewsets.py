@@ -1,3 +1,4 @@
+from core.exceptions import ApplicationValidationError
 from core.viewsets import ModelViewSet
 from core.permissions import IsAdmin, IsAgencyMember
 from .models import Survey, Question, Response
@@ -40,4 +41,10 @@ class ResponseViewset(ModelViewSet):
         return Response.objects.for_user(self.request.user)
 
     def perform_create(self, serializer):
+        self.validate_response(serializer.validated_data)
         serializer.save(created_by=self.request.user)
+
+    def validate_response(self, data):
+        pass
+        # if not can_read_survey(self.request.user, data.survey):
+        #     raise ApplicationValidationError({'survey': ['Access denied']})

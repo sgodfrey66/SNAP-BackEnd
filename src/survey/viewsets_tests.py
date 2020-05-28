@@ -184,7 +184,45 @@ def test_create_response(client):
             },
         ],
     }
+    # check api response
     response = api_client.post(url, data, format='json')
-    print(response.data)
+    print(response.json())
     assert response.status_code == 201
-    # assert response.survey
+
+    # check model
+    r = Response.objects.first()
+    ans = Answer.objects.first()
+    assert Response.objects.count() == 1
+    assert r.survey == survey1
+    assert r.respondent == client1
+    assert Answer.objects.count() == 1
+    assert ans.response == r
+    assert ans.question == question1
+    assert ans.value == 'yes'
+
+
+def test_create_response_invalid_survey(client):
+    agency1, agency2, user1, user2, client1, client2 = setup_2_agencies()
+    survey2 = Survey.objects.create(name='survey2', definition={}, created_by=user2)
+    question1 = Question.objects.create(title='question1', created_by=user1)
+    client = Client.objects.create(first_name='John', last_name='Doe', dob='2000-01-01', created_by=user1)
+
+    url = '/responses/'
+    api_client = APIClient()
+    api_client.force_authenticate(user1)
+    data = {
+        'survey': 9999,  # non-existing survey
+        'respondent': {
+            'id': client1.id,
+            'type': 'Client',
+        },
+        'answers': [
+            {
+                'question': question1.id,
+                'value': 'yes',
+            },
+        ],
+    }
+    # check api response
+    response = api_client.post(url, data, format='json')
+    assert response.status_code == 400
