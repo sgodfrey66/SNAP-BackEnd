@@ -36,6 +36,7 @@ class BaseConfiguration(Configuration):
         'django.contrib.messages',
         'django.contrib.staticfiles',
         'django_extensions',
+        'django_filters',
         'rest_framework',
         'rest_framework.authtoken',
         'corsheaders',
@@ -122,6 +123,7 @@ class BaseConfiguration(Configuration):
         ],
         'DEFAULT_PAGINATION_CLASS': 'core.pagination.PageNumberPaginationWithTotalPages',
         'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+        'DEFAULT_FILTER_BACKENDS': ['core.filters.AllDjangoFilterBackend'],
         'PAGE_SIZE': 100,
     }
 
