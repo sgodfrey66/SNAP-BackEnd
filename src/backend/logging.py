@@ -46,7 +46,7 @@ def setup_logging(log_level: str, logs_filename: str):
                 'formatter': 'colored_db',
             },
             'file_handler': {
-                'class': 'logging.FileHandler',
+                'class': 'logging.handlers.RotatingFileHandler',
                 'filename': logs_filename,
                 'formatter': 'json_formatter',
             },

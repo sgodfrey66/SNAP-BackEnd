@@ -21,15 +21,23 @@ class ClientViewset(ModelViewSet):
 
     def perform_create(self, serializer):
         instance = serializer.save(created_by=self.request.user)
-        RequestLogger(self.request, instance=instance).info('client created')
+        self.request.logger.set_context(
+            data=serializer.validated_data,
+            instance=instance,
+        ).info('client created')
 
     def perform_update(self, serializer):
         instance = serializer.save()
-        RequestLogger(self.request, instance=instance).info('client updated')
+        self.request.logger.set_context(
+            data=serializer.validated_data,
+            instance=instance,
+        ).info('client updated')
 
     def perform_destroy(self, instance):
         instance.destroy()
-        RequestLogger(self.request, instance).info('client destroyed')
+        self.request.logger.set_context(
+            instance=instance,
+        ).info('client deleted')
 
     @action(detail=False, methods=['get'])
     @swagger_auto_schema(
