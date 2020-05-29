@@ -1,4 +1,3 @@
-import colorlog
 import logging.config
 from django.utils.log import DEFAULT_LOGGING
 

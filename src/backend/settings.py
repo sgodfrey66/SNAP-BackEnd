@@ -151,13 +151,12 @@ class BaseConfiguration(Configuration):
     # Logging
     LOG_FILE = values.Value('./../application.log')
     LOG_LEVEL = values.Value('DEBUG')
-
     LOGGING_CONFIG = None
-    setup_logging(str(LOG_LEVEL), str(LOG_FILE))
 
     def __init__(self):
         print(f'Using {self.__class__.__name__} config')
         print(f'Logging {self.LOG_LEVEL} messages to {os.path.abspath(self.LOG_FILE)}')
+        setup_logging(str(self.LOG_LEVEL), str(self.LOG_FILE))
 
 
 class Dev(BaseConfiguration):
