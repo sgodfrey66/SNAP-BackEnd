@@ -157,6 +157,7 @@ class BaseConfiguration(Configuration):
 
     def __init__(self):
         print(f'Using {self.__class__.__name__} config')
+        print(f'Logging {self.LOG_LEVEL} messages to {os.path.abspath(self.LOG_FILE)}')
 
 
 class Dev(BaseConfiguration):
