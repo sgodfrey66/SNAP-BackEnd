@@ -48,11 +48,12 @@ class AnswerWriter(ObjectSerializer):
 class ResponseReader(ObjectSerializer):
     created_by = CreatedByReader(read_only=True)
     respondent = ContentObjectRelatedField(read_only=True)
+    survey = SurveyReader(read_only=True)
     answers = AnswerReader(many=True)
 
     class Meta:
         model = Response
-        fields = ('id', 'object', 'respondent', 'answers', 'created_by', 'created_at', 'modified_at')
+        fields = ('id', 'object', 'survey', 'respondent', 'answers', 'created_by', 'created_at', 'modified_at')
 
 
 class ResponseWriter(ObjectSerializer):
