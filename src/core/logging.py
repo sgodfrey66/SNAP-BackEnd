@@ -1,6 +1,7 @@
 import uuid
 import logging
 from itertools import chain
+from django.db import models
 
 logger = logging.getLogger('app')
 
@@ -19,12 +20,22 @@ class RequestLogger():
     def __init__(self, request, **kwargs):
         self.request = request
         self.kwargs = kwargs
-        self.correlation_id = uuid.uuid4()
+        self.correlation_id = kwargs.get('correlation_id', uuid.uuid4())
+        self.context = {}
 
-    def get_extra(self):
+    def set_context(self, **kwargs):
+        self.context = kwargs
+        return self
+
+    def get_extra(self, clear_context=True):
         extra = {
             'correlation_id': self.correlation_id,
         }
+
+        if 'view' in self.kwargs:
+            extra['view'] = self.kwargs['view']
+
+        # add user data
         try:
             extra['user'] = {
                 'id': self.request.user.id,
@@ -33,9 +44,14 @@ class RequestLogger():
         except Exception as err:
             extra['user'] = str(err)
 
-        for key, value in self.kwargs.items():
-            extra[key] = instance_to_dict(value)
-
+        for key, value in self.context.items():
+            print(type(value))
+            if isinstance(value, models.Model):
+                extra[key] = instance_to_dict(value)
+            else:
+                extra[key] = value
+        if clear_context:
+            self.context = {}
         return extra
 
     def debug(self, *args, **kwargs):
@@ -47,6 +63,5 @@ class RequestLogger():
     def warning(self, *args, **kwargs):
         logger.warning(*args, **kwargs, extra=self.get_extra())
 
-
-def with_context(**kwargs):
-    return logger
+    def error(self, *args, **kwargs):
+        logger.error(*args, **kwargs, extra=self.get_extra())
