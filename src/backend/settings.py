@@ -123,7 +123,6 @@ class BaseConfiguration(Configuration):
         ],
         'DEFAULT_PAGINATION_CLASS': 'core.pagination.PageNumberPaginationWithTotalPages',
         'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
-        'DEFAULT_FILTER_BACKENDS': ['core.filters.AllDjangoFilterBackend'],
         'PAGE_SIZE': 100,
     }
 

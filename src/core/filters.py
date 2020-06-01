@@ -1,4 +1,17 @@
 from django_filters.rest_framework import DjangoFilterBackend
+from django.contrib.postgres.fields import JSONField, ArrayField
+from django.contrib.postgres.forms import SimpleArrayField
+from django_filters import filterset
+from django_filters import rest_framework as filters
+from django_filters.rest_framework import DjangoFilterBackend
+from django_filters.rest_framework.filters import Filter
+
+
+class ArrayFilter(Filter):
+    """
+    Array filter to tell filterset about  base field class for lookups.
+    """
+    base_field_class = SimpleArrayField
 
 
 class AllDjangoFilterBackend(DjangoFilterBackend):
@@ -20,5 +33,14 @@ class AllDjangoFilterBackend(DjangoFilterBackend):
             class Meta:
                 exclude = ''
                 model = queryset.model
+                filter_overrides = {
+                    ArrayField: {
+                        'filter_class': ArrayFilter
+                    },
+                    JSONField: {
+                        'filter_class': filters.CharFilter,
+                        'extra': lambda f: {'lookup_expr': 'icontains'},
+                    },
+                }
 
         return AutoFilterSet
