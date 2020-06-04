@@ -53,8 +53,9 @@ class ModelViewSet(viewsets.ModelViewSet):
         writer = self.get_write_serializer(data=request.data)
         writer.is_valid(raise_exception=True)
         self.perform_create(writer)
+        instance = writer.instance
         headers = self.get_success_headers(writer.data)
-        reader = self.get_read_serializer(writer.instance)
+        reader = self.get_read_serializer(instance)
         LogEntry.objects.log_action(
             user_id=request.user.pk,
             content_type_id=ContentType.objects.get_for_model(instance).pk,
@@ -63,6 +64,10 @@ class ModelViewSet(viewsets.ModelViewSet):
             action_flag=ADDITION,
             change_message=f"Added via {self.get_view_name()}.",
         )
+        request.logger.set_context(
+            data=writer.validated_data,
+            instance=instance,
+        ).info(f'{instance.__class__.__name__} created')
         return Response(reader.data, status=status.HTTP_201_CREATED, headers=headers)
 
     """
@@ -88,6 +93,10 @@ class ModelViewSet(viewsets.ModelViewSet):
             action_flag=CHANGE,
             change_message=f"Changed via {self.get_view_name()}.",
         )
+        request.logger.set_context(
+            data=serializer.validated_data,
+            instance=instance,
+        ).info(f'{instance.__class__.__name__} changed')
         return Response(serializer.data)
 
     """
@@ -105,4 +114,7 @@ class ModelViewSet(viewsets.ModelViewSet):
             action_flag=DELETION,
             change_message=f"Deleted via {self.get_view_name()}.",
         )
+        request.logger.set_context(
+            instance=instance,
+        ).info(f'{instance.__class__.__name__} deleted')
         return response

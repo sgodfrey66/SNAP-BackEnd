@@ -186,7 +186,6 @@ def test_create_response(client):
     }
     # check api response
     response = api_client.post(url, data, format='json')
-    print(response.json())
     assert response.status_code == 201
 
     # check model

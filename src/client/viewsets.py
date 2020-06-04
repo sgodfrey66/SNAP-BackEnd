@@ -22,20 +22,3 @@ class ClientViewset(ModelViewSet):
 
     def perform_create(self, serializer):
         instance = serializer.save(created_by=self.request.user)
-        self.request.logger.set_context(
-            data=serializer.validated_data,
-            instance=instance,
-        ).info('client created')
-
-    def perform_update(self, serializer):
-        instance = serializer.save()
-        self.request.logger.set_context(
-            data=serializer.validated_data,
-            instance=instance,
-        ).info('client updated')
-
-    def perform_destroy(self, instance):
-        instance.destroy()
-        self.request.logger.set_context(
-            instance=instance,
-        ).info('client deleted')

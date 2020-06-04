@@ -13,9 +13,11 @@ def instance_to_dict(instance):
     opts = instance._meta
     data = {}
     for f in chain(opts.concrete_fields, opts.private_fields):
-        data[f.name] = f.value_from_object(instance)
+        if hasattr(f, 'value_from_object'):
+            data[f.name] = f.value_from_object(instance)
     for f in opts.many_to_many:
-        data[f.name] = [i.id for i in f.value_from_object(instance)]
+        if hasattr(f, 'value_from_object'):
+            data[f.name] = [i.id for i in f.value_from_object(instance)]
     return data
 
 
@@ -51,7 +53,6 @@ class RequestLogger():
             extra['user'] = str(err)
 
         for key, value in self.context.items():
-            print(type(value))
             if isinstance(value, models.Model):
                 extra[key] = instance_to_dict(value)
             else:
