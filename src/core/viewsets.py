@@ -1,5 +1,7 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
+from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
+from django.contrib.contenttypes.models import ContentType
 
 
 class ModelViewSet(viewsets.ModelViewSet):
@@ -53,6 +55,14 @@ class ModelViewSet(viewsets.ModelViewSet):
         self.perform_create(writer)
         headers = self.get_success_headers(writer.data)
         reader = self.get_read_serializer(writer.instance)
+        LogEntry.objects.log_action(
+            user_id=request.user.pk,
+            content_type_id=ContentType.objects.get_for_model(instance).pk,
+            object_id=instance.pk,
+            object_repr=str(instance),
+            action_flag=ADDITION,
+            change_message=f"Added via {self.get_view_name()}.",
+        )
         return Response(reader.data, status=status.HTTP_201_CREATED, headers=headers)
 
     """
@@ -70,5 +80,29 @@ class ModelViewSet(viewsets.ModelViewSet):
             # If 'prefetch_related' has been applied to a queryset, we need to
             # forcibly invalidate the prefetch cache on the instance.
             instance._prefetched_objects_cache = {}
-
+        LogEntry.objects.log_action(
+            user_id=request.user.pk,
+            content_type_id=ContentType.objects.get_for_model(instance).pk,
+            object_id=instance.pk,
+            object_repr=str(instance),
+            action_flag=CHANGE,
+            change_message=f"Changed via {self.get_view_name()}.",
+        )
         return Response(serializer.data)
+
+    """
+    Delete model instance.
+    """
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        response = super().destroy(*args, **kwargs)
+        LogEntry.objects.log_action(
+            user_id=request.user.pk,
+            content_type_id=ContentType.objects.get_for_model(instance).pk,
+            object_id=instance.pk,
+            object_repr=str(instance),
+            action_flag=DELETION,
+            change_message=f"Deleted via {self.get_view_name()}.",
+        )
+        return response

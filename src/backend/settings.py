@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+from datetime import datetime
 from configurations import Configuration, values
 from .logging import setup_logging
 
@@ -153,6 +154,9 @@ class BaseConfiguration(Configuration):
     LOG_FILE = values.Value('./../application.log')
     LOG_LEVEL = values.Value('DEBUG')
     LOGGING_CONFIG = None
+
+    BUILD_VERSION = values.Value('development')
+    BUILD_DATE = values.Value(datetime.now())
 
     def __init__(self):
         print(f'Using {self.__class__.__name__} config')

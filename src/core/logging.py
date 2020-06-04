@@ -1,7 +1,10 @@
 import uuid
 import logging
+import os
 from itertools import chain
 from django.db import models
+from django.conf import settings
+
 
 logger = logging.getLogger('app')
 
@@ -30,6 +33,9 @@ class RequestLogger():
     def get_extra(self, clear_context=True):
         extra = {
             'correlation_id': self.correlation_id,
+            'config': os.environ.get('DJANGO_CONFIGURATION'),
+            'build_version': settings.BUILD_VERSION,
+            'build_date': settings.BUILD_DATE,
         }
 
         if 'view' in self.kwargs:
