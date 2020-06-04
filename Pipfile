@@ -24,6 +24,8 @@ colorlog = "*"
 python-json-logger = "*"
 pylint = "*"
 pylint-django = "*"
+graphviz = "*"
+pygraphviz = "*"
 
 [dev-packages]
 autopep8 = "*"
@@ -34,5 +36,7 @@ jupyter = "*"
 python_version = "3.7"
 
 [scripts]
+start = "./manage.py runserver"
 ssh = "ssh -i /home/pgorecki/.ssh/snap.pem ubuntu@gsnap.ctagroup.org"
 deploy = "ssh -i /home/pgorecki/.ssh/snap.pem ubuntu@gsnap.ctagroup.org cd ./snap-src && ./deploy_backend.sh"
+generate_erd = "./manage.py graph_models -a -g -o erd.png"
