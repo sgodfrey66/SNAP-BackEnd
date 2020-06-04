@@ -1,3 +1,4 @@
+from django.conf import settings
 from rest_framework import routers, serializers, viewsets
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -11,7 +12,7 @@ class HealthViewSet(APIView):
     permission_classes = (AllowAny, )
 
     def get(self, request, format=None):
-        data = {'status': 'up'}
+        data = {'status': 'up', 'build_version': settings.BUILD_VERSION, 'build_date': settings.BUILD_DATE}
         logger.info('Health check')
         return Response(data)
 
