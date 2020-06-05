@@ -74,6 +74,21 @@ def test_create_survey_by_user1():
     assert response.data['created_by']['id'] == user1.id
 
 
+def test_create_survey_with_invalid_definition_by_user1():
+    agency1, agency2, user1, user2, client1, client2 = setup_2_agencies()
+    url = '/surveys/'
+    api_client = APIClient()
+    api_client.force_authenticate(user1)
+    response = api_client.post(url, {
+        'name': 'Survey',
+        'definition': {'items': [{
+            'type': 'question',
+            'title': 'question without id',
+        }]},
+    }, format='json')
+    assert response.status_code == 400
+
+
 def test_update_own_survey_by_user1():
     agency1, agency2, user1, user2, client1, client2 = setup_2_agencies()
     survey = Survey.objects.create(name='Survey A', definition={'items': []}, created_by=user1)
@@ -84,6 +99,7 @@ def test_update_own_survey_by_user1():
         'name': 'Survey B',
         'definition': {'items': []},
     }, format='json')
+    print(response.json())
     assert response.status_code == 200
     assert response.data['name'] == 'Survey B'
 
