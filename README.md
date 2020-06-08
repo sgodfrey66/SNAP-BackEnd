@@ -22,12 +22,12 @@ Django Rules
 
 ## Logging
 
-Application logging should be handled with `app` or `app.[XYZ]` loggers:
+Application logging should be handled with `django.app` or `django.app.[XYZ]` loggers:
 
 ```
 import logging
-logging.getLogger('app').error('app error')
-logging.getLogger('app.[XYZ]').error('app error')
+logging.getLogger('django.app').error('app error')
+logging.getLogger('django.app[XYZ]').error('app error')
 ```
 
 Set LOGLEVEL environment variable to control app-level logger verbosity.
@@ -54,3 +54,9 @@ then you can work with models like so:
 ```
 list(Client.objects.all())
 ```
+
+# Deployment
+
+Currently new version can be deployed via `pipenv run deploy`
+
+## Production server dependencies

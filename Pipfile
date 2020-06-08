@@ -22,15 +22,15 @@ sentry-sdk = "*"
 pyyaml = "*"
 colorlog = "*"
 python-json-logger = "*"
-pylint = "*"
-pylint-django = "*"
-graphviz = "*"
-pygraphviz = "*"
 
 [dev-packages]
 autopep8 = "*"
 flake8 = "*"
 jupyter = "*"
+pylint = "*"
+pylint-django = "*"
+graphviz = "*"
+pygraphviz = "*"
 
 [requires]
 python_version = "3.7"
