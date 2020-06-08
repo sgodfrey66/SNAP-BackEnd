@@ -76,6 +76,10 @@ def setup_logging(log_level: str, logs_filename: str):
                 'handlers': ['console'],
                 'propagate': False,
             },
+            'django': {
+                'level': 'WARNING',
+                'handlers': ['file_handler'],
+            },
             # Default runserver request logging
             'django.server': DEFAULT_LOGGING['loggers']['django.server'],
 

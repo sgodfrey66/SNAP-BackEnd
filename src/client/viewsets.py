@@ -15,10 +15,10 @@ class ClientViewset(ModelViewSet):
     read_serializer_class = ClientReader
     write_serializer_class = ClientWriter
     permission_classes = [IsAdmin | IsAgencyMember]
-    filter_class = ClientFilter
+    filterset_class = ClientFilter
 
     def get_queryset(self):
         return Client.objects.for_user(self.request.user)
 
     def perform_create(self, serializer):
-        instance = serializer.save(created_by=self.request.user)
+        serializer.save(created_by=self.request.user)

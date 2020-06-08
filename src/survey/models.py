@@ -11,21 +11,6 @@ from core.json_yaml_field import JsonYamlField
 from survey.enums import QuestionCategory
 
 
-class Survey(ObjectRoot):
-    class Meta:
-        db_table = 'survey'
-        ordering = ['created_at']
-    name = models.CharField(max_length=64)
-    definition = JsonYamlField()
-    questions = ArrayField(models.UUIDField(), null=True, blank=True)
-    is_public = models.BooleanField(default=False)
-
-    objects = AgencyObjectManager()
-
-    def __str__(self):
-        return self.name
-
-
 class Question(ObjectRoot):
     title = models.CharField(max_length=64)
     description = models.TextField(default='', blank=True)
@@ -43,6 +28,44 @@ class Question(ObjectRoot):
 
     def __str__(self):
         return self.title
+
+
+class Survey(ObjectRoot):
+    class Meta:
+        db_table = 'survey'
+        ordering = ['created_at']
+    name = models.CharField(max_length=64)
+    definition = JsonYamlField()
+    questions = models.ManyToManyField(Question, blank=True)
+    is_public = models.BooleanField(default=False)
+
+    objects = AgencyObjectManager()
+
+    def get_definition_items(self):
+        def traverse_items(current, all_items=[]):
+            yield current
+            for item in current.get('items', []):
+                yield item
+
+        yield from traverse_items(self.definition)
+
+    def get_related_question_ids(self):
+        for item in self.get_definition_items():
+            if item.get('type', None) == 'question' and 'questionId' in item:
+                yield (item.get('id', None), item['questionId'])
+
+        # def traverse_items(current, question_ids=[]):
+        #     if current.get('type', None) == 'question' and 'questionId' in current:
+        #         question_ids.append((current.get('id', None), current['questionId']))
+
+        #     for item in current.get('items', []):
+        #         traverse_items(item, question_ids)
+        #     return question_ids
+
+        # return traverse_items(self.definition)
+
+    def __str__(self):
+        return self.name
 
 
 class Response(ObjectRoot):
@@ -68,14 +91,18 @@ class Answer(models.Model):
 
 @receiver(pre_save, sender=Survey)
 def save_related_questions(sender, instance, *args, **kwargs):
+    print('presave', instance)
 
-    def traverse_items(current, question_ids = []):
-        if current.get('type', None) == 'question' and 'question_id' in current:
-            question_ids.append(current['question_id'])
+    def traverse_items(current, questions=[]):
+        if current.get('type', None) == 'question' and 'questionId' in current:
+            q = Question.objects.get(pk=current['questionId'])
+            questions.append(q)
 
         for item in current.get('items', []):
-            traverse_items(item, question_ids)
+            traverse_items(item, questions)
 
-        return question_ids
+        return questions
 
-    instance.questions = traverse_items(instance.definition)
+    questions_in_survey = traverse_items(instance.definition)
+    print(questions_in_survey)
+    instance.questions.set(questions_in_survey)
