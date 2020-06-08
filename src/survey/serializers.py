@@ -85,3 +85,9 @@ class ResponseWriter(ObjectSerializer):
             Answer.objects.create(response=response, **ans)
 
         return response
+
+    def update(self, instance, validated_data):
+        instance.answers.all().delete()
+        for ans in validated_data['answers']:
+            instance.answers.create(**ans)
+        return instance

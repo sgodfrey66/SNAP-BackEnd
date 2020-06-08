@@ -76,10 +76,10 @@ class ModelViewSet(viewsets.ModelViewSet):
 
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
-        instance = self.get_object()
-        serializer = self.get_serializer(instance, data=request.data, partial=partial)
-        serializer.is_valid(raise_exception=True)
-        self.perform_update(serializer)
+        writer = self.get_write_serializer(self.get_object(), data=request.data, partial=partial)
+        writer.is_valid(raise_exception=True)
+        self.perform_update(writer)
+        instance = writer.instance
 
         if getattr(instance, '_prefetched_objects_cache', None):
             # If 'prefetch_related' has been applied to a queryset, we need to
@@ -94,10 +94,12 @@ class ModelViewSet(viewsets.ModelViewSet):
             change_message=f"Changed via {self.get_view_name()}.",
         )
         request.logger.set_context(
-            data=serializer.validated_data,
+            data=writer.validated_data,
             instance=instance,
         ).info(f'{instance.__class__.__name__} changed')
-        return Response(serializer.data)
+
+        reader = self.get_read_serializer(instance)
+        return Response(reader.data)
 
     """
     Delete model instance.
