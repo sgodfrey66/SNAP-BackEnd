@@ -45,6 +45,7 @@ class BaseConfiguration(Configuration):
         'core',
         'agency',
         'client',
+        'program',
         'survey',
     ]
 

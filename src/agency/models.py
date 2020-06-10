@@ -1,6 +1,7 @@
 from django.db import models
 from core.models import ObjectRoot
 from client.models import Client
+from program.models import Program
 
 
 class Agency(ObjectRoot):
@@ -8,6 +9,7 @@ class Agency(ObjectRoot):
         db_table = 'agency'
         verbose_name_plural = 'Agencies'
     name = models.CharField(max_length=64)
+    programs = models.ManyToManyField(Program)
 
     def __str__(self):
         return self.name
