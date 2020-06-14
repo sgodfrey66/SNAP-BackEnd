@@ -1,7 +1,6 @@
 from django.core import exceptions
 import django_filters
 from rest_framework.exceptions import ValidationError
-from client.models import Client
 
 
 class ResponseFilter(django_filters.FilterSet):

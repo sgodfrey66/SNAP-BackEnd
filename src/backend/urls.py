@@ -21,6 +21,7 @@ from rest_framework.authtoken.views import obtain_auth_token
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 import client.viewsets
+import program.viewsets
 import survey.viewsets
 import core.views
 from core.logging import logger
@@ -43,7 +44,7 @@ router.register('clients', client.viewsets.ClientViewset, basename='client')
 router.register('surveys', survey.viewsets.SurveyViewset, basename='survey')
 router.register('questions', survey.viewsets.QuestionViewset, basename='question')
 router.register('responses', survey.viewsets.ResponseViewset, basename='response')
-
+router.register('programs', program.viewsets.ProgramViewset, basename='program')
 urlpatterns = [
     url(r'^', include(router.urls)),
     path('users/me/', core.views.UsersMe.as_view(), name='users_me'),

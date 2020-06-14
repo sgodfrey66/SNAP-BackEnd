@@ -1,6 +1,22 @@
 from rest_framework.permissions import IsAuthenticated
 
 
+class IsAgencyMemberReadOnly(IsAuthenticated):
+    """
+    Allows access read-only to authenticated users.
+    """
+
+    def has_permission(self, request, view=None):
+        if view.action not in ['list', 'retrieve']:
+            return False
+
+        try:
+            return bool(request.user.profile.agency)
+        except AttributeError:
+            pass
+        return False
+
+
 class IsAgencyMember(IsAuthenticated):
     """
     Allows access only to authenticated users.

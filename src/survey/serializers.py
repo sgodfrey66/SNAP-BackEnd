@@ -63,6 +63,7 @@ class ResponseReader(ObjectSerializer):
 class ResponseWriter(ObjectSerializer):
     class RespondentWriter(ContentObjectRelatedField):
         def get_queryset(self):
+            # TODO: .....
             print(('get_qs'))
             return None
 

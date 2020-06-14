@@ -1,6 +1,7 @@
 from django.db import models
 from core.models import ObjectRoot
 from survey.models import Survey
+from .managers import ProgramObjectManager
 
 
 class Program(ObjectRoot):
@@ -16,6 +17,8 @@ class Program(ObjectRoot):
         Survey, related_name='programs_where_is_update_survey', null=True, blank=True, on_delete=models.SET_NULL)
     enrollment_exit_survey = models.ForeignKey(
         Survey, related_name='programs_where_is_exit_survey', null=True, blank=True, on_delete=models.SET_NULL)
+
+    objects = ProgramObjectManager()
 
     def __str__(self):
         return self.name
