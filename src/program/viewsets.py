@@ -1,8 +1,6 @@
-from django_filters import rest_framework as filters
 from core.viewsets import ModelViewSet
 from core.permissions import IsAdmin, IsAgencyMemberReadOnly
-from client.filters import ClientFilter
-from .filters import EligibilityViewsetFilter, EnrollmentViewsetFilter
+from .filters import AgencyProgramConfigViewsetFilter, EligibilityViewsetFilter, EnrollmentViewsetFilter
 from .models import Program, AgencyProgramConfig, Eligibility, Enrollment
 from .serializers import (
     ProgramReader, ProgramWriter,
@@ -32,6 +30,7 @@ class AgencyProgramConfigViewset(ModelViewSet):
     read_serializer_class = AgencyProgramConfigReader
     write_serializer_class = AgencyProgramConfigWriter
     permission_classes = [IsAdmin | IsAgencyMemberReadOnly]
+    filterset_class = AgencyProgramConfigViewsetFilter
 
     def get_queryset(self):
         return AgencyProgramConfig.objects.for_user(self.request.user)
