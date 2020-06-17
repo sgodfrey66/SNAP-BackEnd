@@ -65,15 +65,18 @@ class Enrollment(ObjectRoot):
 
 
 class Eligibility(ObjectRoot):
+    class Meta:
+        verbose_name_plural = 'Eligibility'
+
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
         editable=False
     )
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='eligibility')
+    program = models.ForeignKey(Program, on_delete=models.CASCADE, related_name='eligibility')
     status = models.CharField(
         max_length=32,
         choices=[(x.name, x.value) for x in EligibilityStatus]
     )
-    program = models.ForeignKey(Program, on_delete=models.CASCADE, related_name='eligibility')
-    client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='eligibility')
     history = HistoricalRecords()
