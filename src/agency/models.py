@@ -8,6 +8,8 @@ class Agency(ObjectRoot):
         db_table = 'agency'
         verbose_name_plural = 'Agencies'
     name = models.CharField(max_length=64)
+    programs = models.ManyToManyField('program.Program', related_name='agencies',
+                                      through='program.AgencyProgramConfig')
 
     def __str__(self):
         return self.name

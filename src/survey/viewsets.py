@@ -37,7 +37,7 @@ class ResponseViewset(ModelViewSet):
     read_serializer_class = ResponseReader
     write_serializer_class = ResponseWriter
     permission_classes = [IsAdmin | IsAgencyMember]
-    filter_class = ResponseFilter
+    filterset_class = ResponseFilter
 
     def get_queryset(self):
         return Response.objects.for_user(self.request.user)

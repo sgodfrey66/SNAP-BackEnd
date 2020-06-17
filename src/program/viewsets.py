@@ -1,5 +1,8 @@
+from django_filters import rest_framework as filters
 from core.viewsets import ModelViewSet
 from core.permissions import IsAdmin, IsAgencyMemberReadOnly
+from client.filters import ClientFilter
+from .filters import EligibilityViewsetFilter, EnrollmentViewsetFilter
 from .models import Program, AgencyProgramConfig, Eligibility, Enrollment
 from .serializers import (
     ProgramReader, ProgramWriter,
@@ -42,6 +45,7 @@ class EligibilityViewset(ModelViewSet):
     read_serializer_class = EligibilityReader
     write_serializer_class = EligibilityWriter
     permission_classes = [IsAdmin | IsAgencyMemberReadOnly]
+    filterset_class = EligibilityViewsetFilter
 
     def get_queryset(self):
         return Eligibility.objects.for_user(self.request.user)
@@ -55,6 +59,7 @@ class EnrollmentViewset(ModelViewSet):
     read_serializer_class = EnrollmentReader
     write_serializer_class = EnrollmentWriter
     permission_classes = [IsAdmin | IsAgencyMemberReadOnly]
+    filterset_class = EnrollmentViewsetFilter
 
     def get_queryset(self):
         return Enrollment.objects.for_user(self.request.user)

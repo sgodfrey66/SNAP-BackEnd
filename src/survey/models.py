@@ -91,8 +91,6 @@ class Answer(models.Model):
 
 @receiver(pre_save, sender=Survey)
 def save_related_questions(sender, instance, *args, **kwargs):
-    print('presave', instance)
-
     def traverse_items(current, questions=[]):
         if current.get('type', None) == 'question' and 'questionId' in current:
             q = Question.objects.get(pk=current['questionId'])
@@ -104,5 +102,4 @@ def save_related_questions(sender, instance, *args, **kwargs):
         return questions
 
     questions_in_survey = traverse_items(instance.definition)
-    print(questions_in_survey)
     instance.questions.set(questions_in_survey)

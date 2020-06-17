@@ -42,6 +42,12 @@ class SurveyReader(ObjectSerializer):
                   'created_by', 'created_at', 'modified_at')
 
 
+class SurveyMiniReader(ObjectSerializer):
+    class Meta:
+        model = Survey
+        fields = ('id', 'object', 'name', 'is_public')
+
+
 class SurveyWriter(ObjectSerializer):
     class Meta:
         model = Survey

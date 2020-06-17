@@ -99,7 +99,6 @@ def test_update_own_survey_by_user1():
         'name': 'Survey B',
         'definition': {'items': []},
     }, format='json')
-    print(response.json())
     assert response.status_code == 200
     assert response.data['name'] == 'Survey B'
 
@@ -270,7 +269,6 @@ def test_update_response(client):
     }
     # check api response
     r = api_client.put(url, data, format='json')
-    print(r.json())
     assert r.status_code == 200
     response.refresh_from_db()
     assert len(response.answers.all()) == 1
