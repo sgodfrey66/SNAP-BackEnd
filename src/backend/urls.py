@@ -45,8 +45,6 @@ router.register('surveys', survey.viewsets.SurveyViewset, basename='survey')
 router.register('questions', survey.viewsets.QuestionViewset, basename='question')
 router.register('responses', survey.viewsets.ResponseViewset, basename='response')
 router.register('programs', program.viewsets.ProgramViewset, basename='program')
-router.register('programs/agency_programs_configs', program.viewsets.AgencyProgramConfigViewset,
-                basename='agency_programs_config')
 router.register('programs/agency_configs', program.viewsets.AgencyProgramConfigViewset,
                 basename='agency_programs_config')
 router.register('programs/enrollments', program.viewsets.EnrollmentViewset,
