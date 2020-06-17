@@ -1,5 +1,7 @@
 from core.serializers import ObjectSerializer
-from .models import Program
+from agency.serializers import AgencyReader
+from client.serializers import ClientReader
+from .models import Program, AgencyProgramConfig, Enrollment, Eligibility
 
 
 class ProgramReader(ObjectSerializer):
@@ -9,4 +11,43 @@ class ProgramReader(ObjectSerializer):
 
 
 class ProgramWriter(ProgramReader):
+    pass
+
+
+class AgencyProgramConfigReader(ObjectSerializer):
+    agency = AgencyReader()
+    program = ProgramReader()
+
+    class Meta:
+        model = AgencyProgramConfig
+        fields = ('id', 'object', 'agency', 'program')
+
+
+class AgencyProgramConfigWriter(AgencyProgramConfigReader):
+    pass
+
+
+class EligibilityReader(ObjectSerializer):
+    client = ClientReader()
+    program = ProgramReader()
+
+    class Meta:
+        model = Eligibility
+        fields = ('id', 'object', 'status', 'client', 'program')
+
+
+class EligibilityWriter(AgencyProgramConfigReader):
+    pass
+
+
+class EnrollmentReader(ObjectSerializer):
+    client = ClientReader()
+    program = ProgramReader()
+
+    class Meta:
+        model = Enrollment
+        fields = ('id', 'object', 'status', 'client', 'program')
+
+
+class EnrollmentWriter(AgencyProgramConfigReader):
     pass
