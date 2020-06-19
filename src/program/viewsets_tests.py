@@ -119,3 +119,29 @@ def test_list_agency_config_surveys():
     assert result['enrollment_entry_survey']['name'] == 'entry'
     assert result['enrollment_update_survey']['name'] == 'update'
     assert result['enrollment_exit_survey']['name'] == 'exit'
+
+
+def test_list_eligibility():
+    agency = AgencyWithPrograms(users=1, num_programs=1)
+    user = agency.user_profiles.first().user
+
+    url = '/programs/eligibility/'
+    api_client = APIClient()
+    api_client.force_authenticate(user)
+
+    response = api_client.get(url)
+
+    assert response.status_code == 200
+
+
+def test_list_enrollments():
+    agency = AgencyWithPrograms(users=1, num_programs=1)
+    user = agency.user_profiles.first().user
+
+    url = '/programs/enrollments/'
+    api_client = APIClient()
+    api_client.force_authenticate(user)
+
+    response = api_client.get(url)
+
+    assert response.status_code == 200

@@ -41,7 +41,7 @@ class EligibilityReader(ObjectSerializer):
         fields = ('id', 'object', 'status', 'client', 'program')
 
 
-class EligibilityWriter(AgencyProgramConfigReader):
+class EligibilityWriter(EligibilityReader):
     pass
 
 
@@ -54,5 +54,5 @@ class EnrollmentReader(ObjectSerializer):
         fields = ('id', 'object', 'status', 'client', 'program')
 
 
-class EnrollmentWriter(AgencyProgramConfigReader):
+class EnrollmentWriter(EnrollmentReader):
     pass
