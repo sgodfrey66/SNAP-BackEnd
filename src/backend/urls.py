@@ -21,6 +21,7 @@ from rest_framework.authtoken.views import obtain_auth_token
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 import client.viewsets
+import note.viewsets
 import program.viewsets
 import survey.viewsets
 import core.views
@@ -41,6 +42,7 @@ schema_view = get_schema_view(
 
 router = routers.DefaultRouter()
 router.register('clients', client.viewsets.ClientViewset, basename='client')
+router.register('notes', note.viewsets.NoteViewset, basename='note')
 router.register('surveys', survey.viewsets.SurveyViewset, basename='survey')
 router.register('questions', survey.viewsets.QuestionViewset, basename='question')
 router.register('responses', survey.viewsets.ResponseViewset, basename='response')
