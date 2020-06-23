@@ -30,6 +30,8 @@ class TimeStampedModel(TSM):
         abstract = True
         ordering = ['created_at']
 
+    created_at = AutoCreatedField(_('created_at'))
+    modified_at = AutoLastModifiedField(_('modified_at'))
     created_by = models.ForeignKey(
         User, on_delete=models.PROTECT, blank=True, null=True)
 
