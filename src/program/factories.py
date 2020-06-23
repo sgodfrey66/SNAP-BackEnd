@@ -11,7 +11,7 @@ class ProgramFactory(factory.django.DjangoModelFactory):
     description = factory.LazyAttribute(lambda obj: f'Description for {obj.name}')
 
 
-class AgencyWithPrograms(AgencyFactory):
+class AgencyWithProgramsFactory(AgencyFactory):
 
     @factory.post_generation
     def num_programs(obj, create, extracted, **kwargs):

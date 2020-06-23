@@ -20,11 +20,12 @@ from rest_framework import permissions, routers
 from rest_framework.authtoken.views import obtain_auth_token
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
-import client.viewsets
-import note.viewsets
-import program.viewsets
-import survey.viewsets
 import core.views
+import client.viewsets
+import survey.viewsets
+import program.viewsets
+import note.viewsets
+import matching.viewsets
 from core.logging import logger
 
 schema_view = get_schema_view(
@@ -53,6 +54,8 @@ router.register('programs/enrollments', program.viewsets.EnrollmentViewset,
 router.register('programs/eligibility', program.viewsets.EligibilityViewset,
                 basename='eligibility')
 router.register('programs', program.viewsets.ProgramViewset, basename='program')
+router.register('matching/config', matching.viewsets.MatchingConfigViewset, basename='matching_config')
+router.register('matching', matching.viewsets.ClientMatchingViewset, basename='matching_client')
 
 urlpatterns = [
     url(r'^', include(router.urls)),

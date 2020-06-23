@@ -46,9 +46,10 @@ class BaseConfiguration(Configuration):
         'core',
         'agency',
         'client',
-        'note',
-        'program',
         'survey',
+        'program',
+        'note',
+        'matching',
     ]
 
     MIDDLEWARE = [

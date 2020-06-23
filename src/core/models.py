@@ -1,7 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
-from model_utils.models import UUIDModel, SoftDeletableModel, AutoCreatedField, AutoLastModifiedField
+from model_utils.models import (
+    UUIDModel,
+    SoftDeletableModel,
+    AutoCreatedField,
+    AutoLastModifiedField,
+    TimeStampedModel as TSM
+)
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.conf import settings
@@ -9,14 +15,23 @@ from rest_framework.authtoken.models import Token
 
 
 class ObjectRoot(UUIDModel, SoftDeletableModel):
+    class Meta:
+        abstract = True
+        ordering = ['created_at']
+
     created_by = models.ForeignKey(
         User, on_delete=models.PROTECT, blank=True, null=True)
     created_at = AutoCreatedField(_('created_at'))
     modified_at = AutoLastModifiedField(_('modified_at'))
 
+
+class TimeStampedModel(TSM):
     class Meta:
         abstract = True
         ordering = ['created_at']
+
+    created_by = models.ForeignKey(
+        User, on_delete=models.PROTECT, blank=True, null=True)
 
 
 class UserProfile(models.Model):

@@ -1,14 +1,14 @@
 from rest_framework.test import APIClient
 from survey.factories import SurveyFactory
-from .factories import AgencyWithPrograms
+from .factories import AgencyWithProgramsFactory
 from .models import Program
 
 
 def test_retrieve_programs():
     # create test agency
-    agency1 = AgencyWithPrograms(users=1, num_programs=3)
+    agency1 = AgencyWithProgramsFactory(users=1, num_programs=3)
     # create another agency
-    AgencyWithPrograms(users=1, num_programs=2)
+    AgencyWithProgramsFactory(users=1, num_programs=2)
 
     user = agency1.user_profiles.first().user
     url = '/programs/'
@@ -23,7 +23,7 @@ def test_retrieve_programs():
 
 
 def test_agency_user_cannot_create_program():
-    agency = AgencyWithPrograms(users=1, num_programs=1)
+    agency = AgencyWithProgramsFactory(users=1, num_programs=1)
 
     user = agency.user_profiles.first().user
     url = '/programs/'
@@ -39,8 +39,8 @@ def test_agency_user_cannot_create_program():
 
 
 def test_list_agency_configs():
-    agency = AgencyWithPrograms(users=1, num_programs=1)
-    AgencyWithPrograms(users=1, num_programs=1)
+    agency = AgencyWithProgramsFactory(users=1, num_programs=1)
+    AgencyWithProgramsFactory(users=1, num_programs=1)
 
     user = agency.user_profiles.first().user
     url = '/programs/agency_configs/'
@@ -62,8 +62,8 @@ def test_list_agency_configs():
 
 
 def test_list_program_surveys():
-    agency = AgencyWithPrograms(users=1, num_programs=1)
-    AgencyWithPrograms(users=1, num_programs=1)
+    agency = AgencyWithProgramsFactory(users=1, num_programs=1)
+    AgencyWithProgramsFactory(users=1, num_programs=1)
     user = agency.user_profiles.first().user
 
     entry_survey = SurveyFactory(name='entry', created_by=user)
@@ -92,8 +92,8 @@ def test_list_program_surveys():
 
 
 def test_list_agency_config_surveys():
-    agency = AgencyWithPrograms(users=1, num_programs=1)
-    AgencyWithPrograms(users=1, num_programs=1)
+    agency = AgencyWithProgramsFactory(users=1, num_programs=1)
+    AgencyWithProgramsFactory(users=1, num_programs=1)
     user = agency.user_profiles.first().user
 
     entry_survey = SurveyFactory(name='entry', created_by=user)
@@ -122,7 +122,7 @@ def test_list_agency_config_surveys():
 
 
 def test_list_eligibility():
-    agency = AgencyWithPrograms(users=1, num_programs=1)
+    agency = AgencyWithProgramsFactory(users=1, num_programs=1)
     user = agency.user_profiles.first().user
 
     url = '/programs/eligibility/'
@@ -135,7 +135,7 @@ def test_list_eligibility():
 
 
 def test_list_enrollments():
-    agency = AgencyWithPrograms(users=1, num_programs=1)
+    agency = AgencyWithProgramsFactory(users=1, num_programs=1)
     user = agency.user_profiles.first().user
 
     url = '/programs/enrollments/'
