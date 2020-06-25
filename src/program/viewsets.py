@@ -1,7 +1,6 @@
-import rules
 from core.viewsets import ModelViewSet
 from core.permissions import IsAdmin, IsAgencyMember, IsAgencyMemberReadOnly
-from core.exceptions import ApplicationValidationError
+from core.validation import validate_fields_with_rules
 from .filters import AgencyProgramConfigViewsetFilter, EligibilityViewsetFilter, EnrollmentViewsetFilter
 from .models import Program, AgencyProgramConfig, Eligibility, Enrollment
 from .serializers import (
@@ -10,8 +9,6 @@ from .serializers import (
     EligibilityReader, EligibilityWriter,
     EnrollmentReader, EnrollmentWriter,
 )
-
-# from .filters import AgencyFilter
 
 
 class ProgramViewset(ModelViewSet):
@@ -51,11 +48,8 @@ class EligibilityViewset(ModelViewSet):
     def get_queryset(self):
         return Eligibility.objects.for_user(self.request.user)
 
-    def validate_create(self, request, data):
-        if rules.test_rule('can_read_client', request.user, data['client']) is False:
-            raise ApplicationValidationError('client', ['Not found'])
-        if rules.test_rule('can_read_program', request.user, data['program']) is False:
-            raise ApplicationValidationError('program', ['Not found'])
+    def validate(self, request, data, action):
+        validate_fields_with_rules(request.user, data, client='can_read_client', program='can_read_program')
 
     def perform_create(self, serializer):
         serializer.save(created_by=self.request.user)

@@ -52,7 +52,10 @@ class ModelViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         writer = self.get_write_serializer(data=request.data)
         writer.is_valid(raise_exception=True)
-        self.validate_create(request, writer.validated_data)
+        if hasattr(self, 'validate_create'):
+            self.validate_create(request, writer.validated_data)
+        else:
+            self.validate(request, writer.validated_data, 'create')
         self.perform_create(writer)
         instance = writer.instance
         headers = self.get_success_headers(writer.data)
@@ -79,7 +82,10 @@ class ModelViewSet(viewsets.ModelViewSet):
         partial = kwargs.pop('partial', False)
         writer = self.get_write_serializer(self.get_object(), data=request.data, partial=partial)
         writer.is_valid(raise_exception=True)
-        self.validate_update(request, writer.validated_data)
+        if hasattr(self, 'validate_update'):
+            self.validate_update(request, writer.validated_data)
+        else:
+            self.validate(request, writer.validated_data, 'update')
         self.perform_update(writer)
         instance = writer.instance
 
@@ -123,14 +129,7 @@ class ModelViewSet(viewsets.ModelViewSet):
         ).info(f'{instance.__class__.__name__} deleted')
         return response
 
-    def validate_create(self, request, data):
-        """
-        Raise exception in case of application-level error:
-
-        raise ApplicationValidationError({'some_field': ['Some error message']})
-        """
-
-    def validate_update(self, request, data):
+    def validate(self, request, data, action):
         """
         Raise exception in case of application-level error:
 

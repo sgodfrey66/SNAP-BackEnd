@@ -2,7 +2,7 @@ from rest_framework.test import APIClient
 from survey.factories import SurveyFactory
 from .factories import AgencyWithProgramsFactory
 from client.models import Client
-from .models import Program
+from .models import Program, Eligibility
 
 
 def test_retrieve_programs():
@@ -185,6 +185,30 @@ def test_create_eligibility_for_invalid_program():
         'program': agency2.programs.first().id,
         'client': client.id,
         'status': 'ELIGIBLE',
+    }, format='json')
+    assert response.status_code == 400
+
+
+def test_update_eligibility_runs_validation():
+    agency1 = AgencyWithProgramsFactory(users=1, clients=1, num_programs=1)
+    agency2 = AgencyWithProgramsFactory(users=1, num_programs=1)
+    user = agency1.user_profiles.first().user
+
+    client = Client.objects.first()
+
+    eligibility = Eligibility.objects.create(
+        program=agency1.programs.first(),
+        client=client,
+    )
+
+    api_client = APIClient()
+    api_client.force_authenticate(user)
+
+    url = f'/programs/eligibility/{eligibility.id}/'
+    response = api_client.patch(url, {
+        'program': agency2.programs.first().id,
+        # 'client': client.id,
+        # 'status': 'ELIGIBLE',
     }, format='json')
     assert response.status_code == 400
 
