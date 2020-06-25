@@ -151,23 +151,24 @@ def test_create_eligibility():
     assert response.status_code == 201
 
 
-# def test_create_eligibility_for_invalid_client():
-#     AgencyWithProgramsFactory(users=1, clients=1, num_programs=1)
-#     agency = AgencyWithProgramsFactory(users=1, clients=1, num_programs=1)
-#     user = agency.user_profiles.first().user
+def test_create_eligibility_for_invalid_client():
+    AgencyWithProgramsFactory(users=1, clients=1, num_programs=1)
+    agency = AgencyWithProgramsFactory(users=1, clients=1, num_programs=1)
+    user = agency.user_profiles.first().user
 
-#     url = '/programs/eligibility/'
-#     api_client = APIClient()
-#     api_client.force_authenticate(user)
+    url = '/programs/eligibility/'
+    api_client = APIClient()
+    api_client.force_authenticate(user)
 
-#     client = Client.objects.exclude(created_by=user).first()
+    client = Client.objects.exclude(created_by=user).first()
 
-#     response = api_client.post(url, {
-#         'program': agency.programs.first().id,
-#         'client': client.id,
-#         'status': 'ELIGIBLE',
-#     }, format='json')
-#     assert response.status_code == 401
+    response = api_client.post(url, {
+        'program': agency.programs.first().id,
+        'client': client.id,
+        'status': 'ELIGIBLE',
+    }, format='json')
+    assert response.status_code == 400
+
 
 def test_create_eligibility_for_invalid_program():
     agency1 = AgencyWithProgramsFactory(users=1, clients=1, num_programs=1)

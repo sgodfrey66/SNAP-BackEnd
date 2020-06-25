@@ -23,6 +23,7 @@ pyyaml = "*"
 colorlog = "*"
 python-json-logger = "*"
 django-simple-history = "*"
+rules = "*"
 
 [dev-packages]
 autopep8 = "*"

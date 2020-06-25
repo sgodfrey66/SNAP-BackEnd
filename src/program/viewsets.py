@@ -52,6 +52,8 @@ class EligibilityViewset(ModelViewSet):
         return Eligibility.objects.for_user(self.request.user)
 
     def validate_create(self, request, data):
+        if rules.test_rule('can_read_client', request.user, data['client']) is False:
+            raise ApplicationValidationError('client', ['Not found'])
         if rules.test_rule('can_read_program', request.user, data['program']) is False:
             raise ApplicationValidationError('program', ['Not found'])
 
