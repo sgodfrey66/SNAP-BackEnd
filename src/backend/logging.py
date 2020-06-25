@@ -88,6 +88,6 @@ def setup_logging(log_level: str, logs_filename: str):
                 'level': 'DEBUG',
                 'handlers': ['colored_console_db'],
                 'propagate': False,
-            }
+            },
         },
     })

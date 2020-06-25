@@ -43,6 +43,7 @@ class BaseConfiguration(Configuration):
         'corsheaders',
         'simple_history',
         'drf_yasg',
+        'rules.apps.AutodiscoverRulesConfig',
         'core',
         'agency',
         'client',

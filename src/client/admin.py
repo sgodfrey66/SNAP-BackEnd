@@ -8,3 +8,6 @@ class ClientAdmin(admin.ModelAdmin):
     list_display = ('id', 'first_name', 'middle_name', 'last_name')
 
     inlines = (AgencyClientInline, )
+
+    def get_queryset(self, request):
+        return Client.objects.for_user(request.user)

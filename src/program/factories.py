@@ -21,4 +21,5 @@ class AgencyWithProgramsFactory(AgencyFactory):
         if extracted:
             assert isinstance(extracted, int)
             programs = ProgramFactory.create_batch(extracted)
+            print((obj, programs))
             obj.programs.set(programs)
