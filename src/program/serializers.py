@@ -44,7 +44,7 @@ class EligibilityReader(ObjectSerializer):
 class EligibilityWriter(ObjectSerializer):
     class Meta:
         model = Eligibility
-        fields = ('id', 'object', 'status', 'client', 'program', 'created_at', 'modified_at')
+        fields = ('id', 'status', 'client', 'program')
 
 
 class EnrollmentReader(ObjectSerializer):
@@ -56,5 +56,7 @@ class EnrollmentReader(ObjectSerializer):
         fields = ('id', 'object', 'status', 'client', 'program', 'created_at', 'modified_at')
 
 
-class EnrollmentWriter(EnrollmentReader):
-    pass
+class EnrollmentWriter(ObjectSerializer):
+    class Meta:
+        model = Enrollment
+        fields = ('id', 'status', 'client', 'program')

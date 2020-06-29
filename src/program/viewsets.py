@@ -59,11 +59,14 @@ class EnrollmentViewset(ModelViewSet):
     queryset = Enrollment.objects.all()
     read_serializer_class = EnrollmentReader
     write_serializer_class = EnrollmentWriter
-    permission_classes = [IsAdmin | IsAgencyMemberReadOnly]
+    permission_classes = [IsAdmin | IsAgencyMember]
     filterset_class = EnrollmentViewsetFilter
 
     def get_queryset(self):
         return Enrollment.objects.for_user(self.request.user)
+
+    def validate(self, request, data, action):
+        validate_fields_with_rules(request.user, data, client='can_read_client', program='can_read_program')
 
     def perform_create(self, serializer):
         serializer.save(created_by=self.request.user)
