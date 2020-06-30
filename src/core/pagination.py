@@ -9,6 +9,7 @@ class PageNumberPaginationWithTotalPages(PageNumberPagination):
 
     def paginate_queryset(self, queryset, request, view=None):
         self.page_number = request.query_params.get(self.page_query_param, 1)
+        self.page_size = self.get_page_size(request)
         return super().paginate_queryset(queryset, request, view)
 
     def get_paginated_response(self, data):
