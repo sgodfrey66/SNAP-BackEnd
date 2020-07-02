@@ -1,7 +1,7 @@
 from rest_framework.test import APIClient
 from .factories import AgencyWithProgramsFactory
 from client.models import Client
-from .models import Eligibility
+from .models import ProgramEligibility
 
 
 def test_list_eligibility():
@@ -78,7 +78,7 @@ def test_update_eligibility_runs_validation():
 
     client = Client.objects.first()
 
-    eligibility = Eligibility.objects.create(
+    eligibility = ProgramEligibility.objects.create(
         program=agency1.programs.first(),
         client=client,
     )

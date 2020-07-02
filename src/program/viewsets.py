@@ -1,12 +1,12 @@
 from core.viewsets import ModelViewSet
 from core.permissions import IsAdmin, IsAgencyMember, IsAgencyMemberReadOnly
 from core.validation import validate_fields_with_rules
-from .filters import AgencyProgramConfigViewsetFilter, EligibilityViewsetFilter, EnrollmentViewsetFilter
-from .models import Program, AgencyProgramConfig, Eligibility, Enrollment
+from .filters import AgencyProgramConfigViewsetFilter, ProgramEligibilityViewsetFilter, EnrollmentViewsetFilter
+from .models import Program, AgencyProgramConfig, ProgramEligibility, Enrollment
 from .serializers import (
     ProgramReader, ProgramWriter,
     AgencyProgramConfigReader, AgencyProgramConfigWriter,
-    EligibilityReader, EligibilityWriter,
+    ProgramEligibilityReader, ProgramEligibilityWriter,
     EnrollmentReader, EnrollmentWriter,
 )
 
@@ -38,15 +38,15 @@ class AgencyProgramConfigViewset(ModelViewSet):
         serializer.save(created_by=self.request.user)
 
 
-class EligibilityViewset(ModelViewSet):
-    queryset = Eligibility.objects.all()
-    read_serializer_class = EligibilityReader
-    write_serializer_class = EligibilityWriter
+class ProgramEligibilityViewset(ModelViewSet):
+    queryset = ProgramEligibility.objects.all()
+    read_serializer_class = ProgramEligibilityReader
+    write_serializer_class = ProgramEligibilityWriter
     permission_classes = [IsAdmin | IsAgencyMember]
-    filterset_class = EligibilityViewsetFilter
+    filterset_class = ProgramEligibilityViewsetFilter
 
     def get_queryset(self):
-        return Eligibility.objects.for_user(self.request.user)
+        return ProgramEligibility.objects.for_user(self.request.user)
 
     def validate(self, request, data, action):
         validate_fields_with_rules(request.user, data, client='can_read_client', program='can_read_program')

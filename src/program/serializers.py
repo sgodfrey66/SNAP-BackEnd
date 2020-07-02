@@ -2,7 +2,7 @@ from core.serializers import ObjectSerializer
 from agency.serializers import AgencyReader
 from client.serializers import ClientReader
 from survey.serializers import SurveyMiniReader
-from .models import Program, AgencyProgramConfig, Enrollment, Eligibility
+from .models import Program, AgencyProgramConfig, Enrollment, ProgramEligibility
 
 
 class ProgramReader(ObjectSerializer):
@@ -32,18 +32,18 @@ class AgencyProgramConfigWriter(AgencyProgramConfigReader):
     pass
 
 
-class EligibilityReader(ObjectSerializer):
+class ProgramEligibilityReader(ObjectSerializer):
     client = ClientReader()
     program = ProgramReader()
 
     class Meta:
-        model = Eligibility
+        model = ProgramEligibility
         fields = ('id', 'object', 'status', 'client', 'program', 'created_at', 'modified_at')
 
 
-class EligibilityWriter(ObjectSerializer):
+class ProgramEligibilityWriter(ObjectSerializer):
     class Meta:
-        model = Eligibility
+        model = ProgramEligibility
         fields = ('id', 'status', 'client', 'program')
 
 

@@ -5,10 +5,10 @@ from core.models import ObjectRoot
 from agency.models import Agency
 from client.models import Client
 from survey.models import Survey, Response
-from .enums import EnrollmentStatus, EligibilityStatus
+from .enums import EnrollmentStatus, ProgramEligibilityStatus
 from .managers import (
     ProgramObjectManager, AgencyProgramConfigObjectManager,
-    EligibilityObjectManager, EnrollmentObjectManager,
+    ProgramEligibilityObjectManager, EnrollmentObjectManager,
 )
 
 
@@ -83,21 +83,21 @@ class Enrollment(ObjectRoot):
         return f"{self.id}"
 
 
-class Eligibility(ObjectRoot):
+class ProgramEligibility(ObjectRoot):
     class Meta:
-        verbose_name_plural = 'Eligibility'
+        verbose_name_plural = 'Program eligibility'
 
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
         editable=False
     )
-    client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='eligibility')
-    program = models.ForeignKey(Program, on_delete=models.CASCADE, related_name='eligibility')
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='program_eligibility')
+    program = models.ForeignKey(Program, on_delete=models.CASCADE, related_name='program_eligibility')
     status = models.CharField(
         max_length=32,
-        choices=[(x.name, x.value) for x in EligibilityStatus]
+        choices=[(x.name, x.value) for x in ProgramEligibilityStatus]
     )
     history = HistoricalRecords()
 
-    objects = EligibilityObjectManager()
+    objects = ProgramEligibilityObjectManager()

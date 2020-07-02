@@ -7,6 +7,6 @@ class EnrollmentStatus(Enum):
     EXITED = 'exited'
 
 
-class EligibilityStatus(Enum):
+class ProgramEligibilityStatus(Enum):
     ELIGIBLE = 'eligible'
     NOT_ELIGIBLE = 'not eligible'

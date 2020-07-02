@@ -1,7 +1,5 @@
 import django_filters
-from django.core import exceptions
-from rest_framework.exceptions import ValidationError
-from .models import AgencyProgramConfig, Eligibility, Enrollment
+from .models import AgencyProgramConfig, ProgramEligibility, Enrollment
 
 
 class AgencyProgramConfigViewsetFilter(django_filters.FilterSet):
@@ -10,9 +8,9 @@ class AgencyProgramConfigViewsetFilter(django_filters.FilterSet):
         fields = ['agency', 'program']
 
 
-class EligibilityViewsetFilter(django_filters.FilterSet):
+class ProgramEligibilityViewsetFilter(django_filters.FilterSet):
     class Meta:
-        model = Eligibility
+        model = ProgramEligibility
         fields = ['client']
 
 

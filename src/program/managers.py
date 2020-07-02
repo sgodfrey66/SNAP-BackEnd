@@ -22,7 +22,7 @@ class AgencyProgramConfigObjectManager(models.Manager):
         return super().get_queryset().filter(agency=user.profile.agency)
 
 
-class EligibilityObjectManager(AgencyProgramConfigObjectManager):
+class ProgramEligibilityObjectManager(AgencyProgramConfigObjectManager):
     def for_user(self, user):
         return super().get_queryset().order_by('created_at')
 

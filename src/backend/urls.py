@@ -51,7 +51,7 @@ router.register('programs/agency_configs', program.viewsets.AgencyProgramConfigV
                 basename='agency_programs_config')
 router.register('programs/enrollments', program.viewsets.EnrollmentViewset,
                 basename='enrollment')
-router.register('programs/eligibility', program.viewsets.EligibilityViewset,
+router.register('programs/eligibility', program.viewsets.ProgramEligibilityViewset,
                 basename='eligibility')
 router.register('programs', program.viewsets.ProgramViewset, basename='program')
 router.register('matching/config', matching.viewsets.MatchingConfigViewset, basename='matching_config')
