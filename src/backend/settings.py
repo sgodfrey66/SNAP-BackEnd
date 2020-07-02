@@ -49,6 +49,7 @@ class BaseConfiguration(Configuration):
         'client',
         'survey',
         'program',
+        'eligibility',
         'note',
         'matching',
     ]

@@ -4,7 +4,6 @@ from agency.models import Agency
 from .models import AgencyProgramConfig, ProgramEligibility, Enrollment, Program
 # Register your models here.
 
-# admin.site.register(Program)
 admin.site.register(AgencyProgramConfig)
 
 

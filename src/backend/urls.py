@@ -23,6 +23,7 @@ from drf_yasg import openapi
 import core.views
 import client.viewsets
 import survey.viewsets
+import eligibility.viewsets
 import program.viewsets
 import note.viewsets
 import matching.viewsets
@@ -47,6 +48,14 @@ router.register('notes', note.viewsets.NoteViewset, basename='note')
 router.register('surveys', survey.viewsets.SurveyViewset, basename='survey')
 router.register('questions', survey.viewsets.QuestionViewset, basename='question')
 router.register('responses', survey.viewsets.ResponseViewset, basename='response')
+
+router.register('eligibility/agency_configs', eligibility.viewsets.AgencyEligibilityConfigViewset,
+                basename='agency_eligibility_config')
+router.register('eligibility/clients', eligibility.viewsets.ClientEligibilityViewset,
+                basename='eligibility_clients')
+router.register('eligibility', eligibility.viewsets.EligibilityViewset,
+                basename='eligibility')
+
 router.register('programs/agency_configs', program.viewsets.AgencyProgramConfigViewset,
                 basename='agency_programs_config')
 router.register('programs/enrollments', program.viewsets.EnrollmentViewset,
