@@ -16,6 +16,7 @@ class ClientViewset(ModelViewSet):
     write_serializer_class = ClientWriter
     permission_classes = [IsAdmin | IsAgencyMember]
     filterset_class = ClientSearchFilter
+    ordering_fields = ['first_name', 'middle_name', 'last_name', 'dob']
 
     def get_queryset(self):
         return Client.objects.for_user(self.request.user)
