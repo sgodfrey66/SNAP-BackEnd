@@ -1,4 +1,7 @@
+import json
 from django.conf import settings
+from django.http import HttpResponseNotFound
+from django.views import defaults
 from rest_framework import routers, serializers, viewsets
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -43,3 +46,19 @@ class DashboardSummary(APIView):
             'questions': survey.models.Question.objects.for_user(self.request.user).count(),
         }
         return Response(content)
+
+
+def error404(request, exception):
+    if request.headers.get('Accept') == 'application/json':
+        response_data = {}
+        response_data['detail'] = 'Not found.'
+        return HttpResponseNotFound(json.dumps(response_data), content_type="application/json")
+    return defaults.page_not_found(request, exception)
+
+
+def error500(request):
+    if request.headers.get('Accept') == 'application/json':
+        response_data = {}
+        response_data['detail'] = 'Internal server error.'
+        return HttpResponseNotFound(json.dumps(response_data), content_type="application/json")
+    return defaults.server_error(request)

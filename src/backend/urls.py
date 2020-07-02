@@ -13,7 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.conf.urls import url, include
+from django.conf.urls import url, include, handler404, handler500
 from django.contrib import admin
 from django.urls import path, re_path
 from rest_framework import permissions, routers
@@ -73,6 +73,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^api-auth/', include('rest_framework.urls')),
 ]
+
+
+handler404 = core.views.error404
+handler500 = core.views.error500
 
 # this code is executed only once on server statup
 logger.info('App started')

@@ -174,7 +174,8 @@ class BaseConfiguration(Configuration):
 
 
 class Dev(BaseConfiguration):
-    DEBUG = True
+    DEBUG = False
+    ALLOWED_HOSTS = ['*']
     AUTH_PASSWORD_VALIDATORS = []
     STATIC_ROOT = f"{BaseConfiguration.BASE_DIR}/static/"
 
