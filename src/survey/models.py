@@ -12,6 +12,9 @@ from survey.enums import QuestionCategory
 
 
 class Question(ObjectRoot):
+    class Meta:
+        ordering = ['-created_at']
+
     title = models.CharField(max_length=64)
     description = models.TextField(default='', blank=True)
     category = models.CharField(choices=QuestionCategory.choices,
@@ -33,7 +36,8 @@ class Question(ObjectRoot):
 class Survey(ObjectRoot):
     class Meta:
         db_table = 'survey'
-        ordering = ['created_at']
+        ordering = ['-created_at']
+
     name = models.CharField(max_length=64)
     definition = JsonYamlField()
     questions = models.ManyToManyField(Question, blank=True)
@@ -54,21 +58,14 @@ class Survey(ObjectRoot):
             if item.get('type', None) == 'question' and 'questionId' in item:
                 yield (item.get('id', None), item['questionId'])
 
-        # def traverse_items(current, question_ids=[]):
-        #     if current.get('type', None) == 'question' and 'questionId' in current:
-        #         question_ids.append((current.get('id', None), current['questionId']))
-
-        #     for item in current.get('items', []):
-        #         traverse_items(item, question_ids)
-        #     return question_ids
-
-        # return traverse_items(self.definition)
-
     def __str__(self):
         return self.name
 
 
 class Response(ObjectRoot):
+    class Meta:
+        ordering = ['-created_at']
+
     respondent_type = models.ForeignKey(ContentType, null=True, related_name='responses', on_delete=models.PROTECT)
     respondent_id = models.UUIDField(primary_key=False)
     respondent = GenericForeignKey('respondent_type', 'respondent_id')

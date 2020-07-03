@@ -8,7 +8,7 @@ class ProgramObjectManager(models.Manager):
         if not hasattr(user, 'profile'):
             return self.none()
 
-        return user.profile.agency.programs.order_by('created_at')
+        return user.profile.agency.programs.all()
 
 
 class AgencyProgramConfigObjectManager(models.Manager):
@@ -24,9 +24,9 @@ class AgencyProgramConfigObjectManager(models.Manager):
 
 class ProgramEligibilityObjectManager(AgencyProgramConfigObjectManager):
     def for_user(self, user):
-        return super().get_queryset().order_by('created_at')
+        return super().get_queryset()
 
 
 class EnrollmentObjectManager(AgencyProgramConfigObjectManager):
     def for_user(self, user):
-        return super().get_queryset().order_by('created_at')
+        return super().get_queryset()

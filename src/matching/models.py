@@ -10,7 +10,7 @@ from program.models import Program
 class MatchingConfig(ObjectRoot):
     class Meta:
         db_table = 'matching_config'
-        ordering = ['created_at']
+        ordering = ['-created_at']
 
     agency = models.ForeignKey(Agency, related_name='matching_configs', on_delete=models.CASCADE)
     config = JsonYamlField()
@@ -19,7 +19,7 @@ class MatchingConfig(ObjectRoot):
 class ClientMatching(ObjectRoot):
     class Meta:
         db_table = 'client_matching'
-        ordering = ['created_at']
+        ordering = ['-created_at']
 
     client = models.ForeignKey(Client, related_name='matching', on_delete=models.CASCADE)
     program = models.ForeignKey(Program, related_name='matching', on_delete=models.CASCADE)
@@ -33,7 +33,7 @@ class ClientMatching(ObjectRoot):
 class ClientMatchingHistory(TimeStampedModel):
     class Meta:
         db_table = 'client_matching_history'
-        ordering = ['created_at']
+        ordering = ['-created_at']
 
     client_matching = models.ForeignKey(ClientMatching, related_name='history', on_delete=models.CASCADE)
     step = models.CharField(max_length=256)
@@ -43,7 +43,7 @@ class ClientMatchingHistory(TimeStampedModel):
 class ClientMatchingNote(TimeStampedModel):
     class Meta:
         db_table = 'client_matching_note'
-        ordering = ['created_at']
+        ordering = ['-created_at']
 
     client_matching = models.ForeignKey(ClientMatching, related_name='notes', on_delete=models.CASCADE)
     step = models.CharField(max_length=256)

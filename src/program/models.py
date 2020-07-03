@@ -15,6 +15,7 @@ from .managers import (
 class Program(ObjectRoot):
     class Meta:
         db_table = 'program'
+        ordering = ['-created_at']
 
     name = models.CharField(max_length=64)
     description = models.TextField(blank=True, default='')
@@ -33,6 +34,9 @@ class Program(ObjectRoot):
 
 
 class AgencyProgramConfig(ObjectRoot):
+    class Meta:
+        ordering = ['-created_at']
+
     agency = models.ForeignKey(Agency, on_delete=models.CASCADE)
     program = models.ForeignKey(Program, on_delete=models.CASCADE)
 
@@ -62,6 +66,9 @@ class AgencyProgramConfig(ObjectRoot):
 
 
 class Enrollment(ObjectRoot):
+    class Meta:
+        ordering = ['-created_at']
+
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -86,6 +93,7 @@ class Enrollment(ObjectRoot):
 class ProgramEligibility(ObjectRoot):
     class Meta:
         verbose_name_plural = 'Program eligibility'
+        ordering = ['-created_at']
 
     id = models.UUIDField(
         primary_key=True,

@@ -12,6 +12,7 @@ class Eligibility(ObjectRoot):
     class Meta:
         verbose_name_plural = 'Eligibility'
         db_table = 'eligibility'
+        ordering = ['-created_at']
 
     name = models.CharField(max_length=64)
     objects = EligibilityObjectManager()
@@ -20,6 +21,7 @@ class Eligibility(ObjectRoot):
 class AgencyEligibilityConfig(ObjectRoot):
     class Meta:
         db_table = 'eligibility_agency_config'
+        ordering = ['-created_at']
 
     agency = models.ForeignKey(Agency, on_delete=models.CASCADE)
     eligibility = models.ForeignKey(Eligibility, on_delete=models.CASCADE)
@@ -30,6 +32,7 @@ class AgencyEligibilityConfig(ObjectRoot):
 class ClientEligibility(ObjectRoot):
     class Meta:
         db_table = 'eligibility_client'
+        ordering = ['-created_at']
 
     id = models.UUIDField(
         primary_key=True,

@@ -6,7 +6,7 @@ from core.managers import AgencyObjectManager
 class Client(ObjectRoot):
     class Meta:
         db_table = 'client'
-        ordering = ['created_at']
+        ordering = ['-created_at']
         # permissions = [
         #     ("view", "Can change the status of tasks"),
         # ]
