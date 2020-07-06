@@ -30,6 +30,7 @@ class AgencyProgramConfigViewset(ModelViewSet):
     write_serializer_class = AgencyProgramConfigWriter
     permission_classes = [IsAdmin | IsAgencyMemberReadOnly]
     filterset_class = AgencyProgramConfigViewsetFilter
+    ordering_fields = ['program__name']
 
     def get_queryset(self):
         return AgencyProgramConfig.objects.for_user(self.request.user)

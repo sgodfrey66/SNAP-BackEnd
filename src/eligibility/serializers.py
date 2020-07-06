@@ -1,4 +1,4 @@
-from core.serializers import ObjectSerializer
+from core.serializers import ObjectSerializer, CreatedByReader
 from agency.serializers import AgencyReader
 from client.serializers import ClientReader
 from .models import Eligibility, AgencyEligibilityConfig, ClientEligibility
@@ -32,6 +32,7 @@ class AgencyEligibilityConfigWriter(ObjectSerializer):
 class ClientEligibilityReader(ObjectSerializer):
     eligibility = EligibilityReader()
     client = ClientReader()
+    created_by = CreatedByReader(read_only=True)
 
     class Meta:
         model = ClientEligibility

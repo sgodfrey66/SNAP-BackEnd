@@ -17,4 +17,4 @@ class ProgramEligibilityViewsetFilter(django_filters.FilterSet):
 class EnrollmentViewsetFilter(django_filters.FilterSet):
     class Meta:
         model = Enrollment
-        fields = ['client']
+        fields = ['client', 'program']
