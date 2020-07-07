@@ -7,13 +7,17 @@ class Agency(ObjectRoot):
     class Meta:
         db_table = 'agency'
         verbose_name_plural = 'Agencies'
-        ordering = ['-created_at']
+        ordering = ['name']
 
     name = models.CharField(max_length=64)
     programs = models.ManyToManyField('program.Program', related_name='agencies',
                                       through='program.AgencyProgramConfig')
     eligibility = models.ManyToManyField(
         'eligibility.Eligibility', related_name='eligibility', through='eligibility.AgencyEligibilityConfig')
+
+    security_groups = models.ManyToManyField(
+        'security.SecurityGroup', related_name='agencies', through='security.SecurityGroupAgencyConfig'
+    )
 
     def __str__(self):
         return self.name

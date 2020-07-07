@@ -15,7 +15,7 @@ from .managers import (
 class Program(ObjectRoot):
     class Meta:
         db_table = 'program'
-        ordering = ['-created_at']
+        ordering = ['name']
 
     name = models.CharField(max_length=64)
     description = models.TextField(blank=True, default='')
