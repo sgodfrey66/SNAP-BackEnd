@@ -15,12 +15,14 @@ class SecurityGroup(models.Model):
     enrollments = models.BooleanField(default=False, verbose_name='Access Client enrollment data')
     referrals = models.BooleanField(default=False, verbose_name='Access Client referral data')
     programs = models.ManyToManyField(Program, related_name='security_groups')
+    agencies = models.ManyToManyField(Agency, related_name='security_groups')
 
     def __str__(self):
         return self.name
 
 
 class SecurityGroupAgencyConfig(models.Model):
+    # unused
     class Meta:
         db_table = 'security_group_agency_config'
 

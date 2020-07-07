@@ -15,9 +15,9 @@ class Agency(ObjectRoot):
     eligibility = models.ManyToManyField(
         'eligibility.Eligibility', related_name='eligibility', through='eligibility.AgencyEligibilityConfig')
 
-    security_groups = models.ManyToManyField(
-        'security.SecurityGroup', related_name='agencies', through='security.SecurityGroupAgencyConfig'
-    )
+    # security_groups = models.ManyToManyField(
+    #     'security.SecurityGroup', related_name='agencies', through='security.SecurityGroupAgencyConfig'
+    # )
 
     def __str__(self):
         return self.name
