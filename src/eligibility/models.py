@@ -45,6 +45,7 @@ class ClientEligibility(ObjectRoot):
         max_length=32,
         choices=[(x.name, x.value) for x in EligibilityStatus]
     )
+    effective_date = models.DateField(blank=True, null=True)
     history = HistoricalRecords()
 
     objects = ClientEligibilityObjectManager()

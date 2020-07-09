@@ -1,5 +1,6 @@
 from core.viewsets import ModelViewSet
 from core.permissions import IsAdmin, IsAgencyMember
+from core.validation import validate_fields_with_rules
 from .models import MatchingConfig, ClientMatching
 from .serializers import (
     MatchingConfigReader, MatchingConfigWriter,
@@ -14,8 +15,8 @@ class MatchingConfigViewset(ModelViewSet):
     permission_classes = [IsAdmin | IsAgencyMember]
     # filterset_class = ...
 
-    # def get_queryset(self):
-    #     return MatchingConfig.objects.for_user(self.request.user)
+    def get_queryset(self):
+        return MatchingConfig.objects.for_user(self.request.user)
 
     def perform_create(self, serializer):
         serializer.save(created_by=self.request.user)
@@ -30,6 +31,9 @@ class ClientMatchingViewset(ModelViewSet):
 
     # def get_queryset(self):
     #     return MatchingConfig.objects.for_user(self.request.user)
+
+    def validate(self, request, data, action):
+        validate_fields_with_rules(request.user, data, client='can_read_client', program='can_read_program')
 
     def perform_create(self, serializer):
         serializer.save(created_by=self.request.user)

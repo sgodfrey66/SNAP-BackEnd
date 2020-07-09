@@ -75,6 +75,8 @@ class Enrollment(ObjectRoot):
         editable=False
     )
     program = models.ForeignKey(Program, on_delete=models.CASCADE, related_name='enrollments')
+    start_date = models.DateField(blank=True, null=True)
+    end_date = models.DateField(blank=True, null=True)
     client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='enrollments')
     status = models.CharField(
         max_length=32,

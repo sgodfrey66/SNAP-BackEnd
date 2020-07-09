@@ -5,15 +5,22 @@ from core.json_yaml_field import JsonYamlField
 from agency.models import Agency
 from client.models import Client
 from program.models import Program
+from .managers import MatchingConfigObjectManager, ClientMatchingObjectManager
 
 
 class MatchingConfig(ObjectRoot):
     class Meta:
         db_table = 'matching_config'
-        ordering = ['-created_at']
+        ordering = ['name']
 
     agency = models.ForeignKey(Agency, related_name='matching_configs', on_delete=models.CASCADE)
+    name = models.CharField(max_length=256)
     config = JsonYamlField()
+
+    objects = MatchingConfigObjectManager()
+
+    def __str__(self):
+        return self.name
 
 
 class ClientMatching(ObjectRoot):
@@ -28,6 +35,8 @@ class ClientMatching(ObjectRoot):
     config = models.ForeignKey(MatchingConfig, related_name='client_matches', on_delete=models.PROTECT)
     step = models.CharField(max_length=256)
     outcome = models.CharField(max_length=256)
+
+    objects = ClientMatchingObjectManager()
 
 
 class ClientMatchingHistory(TimeStampedModel):
