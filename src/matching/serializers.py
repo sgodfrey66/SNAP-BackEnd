@@ -40,8 +40,8 @@ class ClientMatchingReader(ObjectSerializer):
 
     class Meta:
         model = ClientMatching
-        fields = ('id', 'object', 'config', 'client', 'program', 'created_at',
-                  'start_date', 'end_date', 'history', 'notes', 'modified_at', 'created_by')
+        fields = ('id', 'object', 'config', 'client', 'program', 'step', 'outcome', 'start_date',
+                  'end_date', 'history', 'notes', 'created_at', 'modified_at', 'created_by')
 
 
 class ClientMatchingWriter(ObjectSerializer):
