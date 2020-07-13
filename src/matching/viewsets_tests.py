@@ -87,14 +87,73 @@ def test_create_client_matching_for_invalid_program():
     api_client = APIClient()
     api_client.force_authenticate(user)
 
-    print(agency1.agencyprogramconfig_set.all())
-    print(list(agency1.programs.all()))
-    print(agency2.agencyprogramconfig_set.all())
-    print(list(agency2.programs.all()))
-
     response = api_client.post(url, {
         'config': config.id,
         'program': agency2.programs.first().id,
         'client': Client.objects.first().id,
     }, format='json')
     assert response.status_code == 400
+
+
+def test_create_note_for_existing_matching():
+    agency = AgencyWithProgramsFactory(users=1, clients=1, num_programs=1)
+    config = MatchingConfigFactory(agency=agency)
+
+    matching = ClientMatchingFactory(
+        config=config,
+        program=agency.programs.first(),
+        client=Client.objects.first(),
+    )
+
+    user = agency.user_profiles.first().user
+
+    url = f'/matching/{matching.id}/'
+    api_client = APIClient()
+    api_client.force_authenticate(user)
+
+    response = api_client.patch(url, {
+        'notes': [
+            {
+                'note': 'abcd'
+            },
+        ]
+    }, format='json')
+
+    assert response.status_code == 200
+
+    matching.refresh_from_db()
+    assert matching.notes.count() == 1
+    assert matching.notes.first().note == 'abcd'
+
+
+def test_create_history_for_existing_matching():
+    agency = AgencyWithProgramsFactory(users=1, clients=1, num_programs=1)
+    config = MatchingConfigFactory(agency=agency)
+
+    matching = ClientMatchingFactory(
+        config=config,
+        program=agency.programs.first(),
+        client=Client.objects.first(),
+    )
+
+    user = agency.user_profiles.first().user
+
+    url = f'/matching/{matching.id}/'
+    api_client = APIClient()
+    api_client.force_authenticate(user)
+
+    response = api_client.patch(url, {
+        'history': [
+            {
+                'step': '1',
+                'outcome': 'success',
+            },
+        ]
+    }, format='json')
+
+    assert response.status_code == 200
+
+    matching.refresh_from_db()
+    assert matching.history.count() == 1
+    assert matching.history.first().step == '1'
+    assert matching.history.first().outcome == 'success'

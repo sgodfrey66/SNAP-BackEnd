@@ -33,8 +33,6 @@ class ClientMatching(ObjectRoot):
     start_date = models.DateField(blank=True, null=True)
     end_date = models.DateField(blank=True, null=True)
     config = models.ForeignKey(MatchingConfig, related_name='client_matches', on_delete=models.PROTECT)
-    step = models.CharField(max_length=256)
-    outcome = models.CharField(max_length=256)
 
     objects = ClientMatchingObjectManager()
 
