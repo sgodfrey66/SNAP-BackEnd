@@ -159,7 +159,7 @@ def test_create_history_for_existing_matching():
     assert matching.history.first().outcome == 'success'
 
 
-def test_client_matchin_history_viewset():
+def test_client_matchin_history_viewset_list():
     agency = AgencyWithProgramsFactory(users=1, clients=1, num_programs=1)
     config = MatchingConfigFactory(agency=agency)
 
@@ -180,3 +180,29 @@ def test_client_matchin_history_viewset():
     print(response.data)
 
     assert response.status_code == 200
+
+
+def test_client_matchin_history_viewset_create():
+    agency = AgencyWithProgramsFactory(users=1, clients=1, num_programs=1)
+    config = MatchingConfigFactory(agency=agency)
+
+    matching = ClientMatchingFactory(
+        config=config,
+        program=agency.programs.first(),
+        client=Client.objects.first(),
+    )
+
+    user = agency.user_profiles.first().user
+
+    url = f'/matching/{matching.id}/history/'
+    api_client = APIClient()
+    api_client.force_authenticate(user)
+
+    response = api_client.post(url, {
+        'step': 1,
+        'outcome': 'ok',
+    }, format='json')
+
+    print(response.data)
+
+    assert response.status_code == 201

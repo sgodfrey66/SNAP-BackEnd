@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from core.viewsets import ModelViewSet
 from core.permissions import IsAdmin, IsAgencyMember
 from core.validation import validate_fields_with_rules
@@ -48,6 +49,10 @@ class ClientMatchingHistoryViewset(ModelViewSet):
     def get_queryset(self):
         return ClientMatchingHistory.objects.filter(client_matching=self.kwargs['client_matching_pk'])
 
+    def perform_create(self, serializer):
+        client_matching = get_object_or_404(ClientMatching, pk=self.kwargs['client_matching_pk'])
+        serializer.save(created_by=self.request.user, client_matching=client_matching)
+
 
 class ClientMatchingNoteViewset(ModelViewSet):
     read_serializer_class = ClientMatchingNoteReader
@@ -55,3 +60,7 @@ class ClientMatchingNoteViewset(ModelViewSet):
 
     def get_queryset(self):
         return ClientMatchingNote.objects.filter(client_matching=self.kwargs['client_matching_pk'])
+
+    def perform_create(self, serializer):
+        client_matching = get_object_or_404(ClientMatching, pk=self.kwargs['client_matching_pk'])
+        serializer.save(created_by=self.request.user, client_matching=client_matching)
