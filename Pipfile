@@ -24,6 +24,7 @@ colorlog = "*"
 python-json-logger = "*"
 django-simple-history = "*"
 rules = "*"
+drf-nested-routers = "*"
 
 [dev-packages]
 autopep8 = "*"

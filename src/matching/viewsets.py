@@ -1,10 +1,12 @@
 from core.viewsets import ModelViewSet
 from core.permissions import IsAdmin, IsAgencyMember
 from core.validation import validate_fields_with_rules
-from .models import MatchingConfig, ClientMatching
+from .models import MatchingConfig, ClientMatching, ClientMatchingHistory, ClientMatchingNote
 from .serializers import (
     MatchingConfigReader, MatchingConfigWriter,
     ClientMatchingReader, ClientMatchingWriter,
+    ClientMatchingHistoryReader, ClientMatchingHistoryWriter,
+    ClientMatchingNoteReader, ClientMatchingNoteWriter,
 )
 
 
@@ -37,3 +39,19 @@ class ClientMatchingViewset(ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(created_by=self.request.user)
+
+
+class ClientMatchingHistoryViewset(ModelViewSet):
+    read_serializer_class = ClientMatchingHistoryReader
+    write_serializer_class = ClientMatchingHistoryWriter
+
+    def get_queryset(self):
+        return ClientMatchingHistory.objects.filter(client_matching=self.kwargs['client_matching_pk'])
+
+
+class ClientMatchingNoteViewset(ModelViewSet):
+    read_serializer_class = ClientMatchingNoteReader
+    write_serializer_class = ClientMatchingNoteWriter
+
+    def get_queryset(self):
+        return ClientMatchingNote.objects.filter(client_matching=self.kwargs['client_matching_pk'])

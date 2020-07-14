@@ -16,7 +16,8 @@ Including another URLconf
 from django.conf.urls import url, include, handler404, handler500
 from django.contrib import admin
 from django.urls import path, re_path
-from rest_framework import permissions, routers
+from rest_framework import permissions
+from rest_framework_nested import routers
 from rest_framework.authtoken.views import obtain_auth_token
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
@@ -64,10 +65,18 @@ router.register('programs/eligibility', program.viewsets.ProgramEligibilityViews
                 basename='eligibility')
 router.register('programs', program.viewsets.ProgramViewset, basename='program')
 router.register('matching/config', matching.viewsets.MatchingConfigViewset, basename='matching_config')
+
 router.register('matching', matching.viewsets.ClientMatchingViewset, basename='matching_client')
+
+client_matching_router = routers.NestedSimpleRouter(router, 'matching', lookup='client_matching')
+client_matching_router.register('history', matching.viewsets.ClientMatchingHistoryViewset,
+                                basename='matching_client_history')
+client_matching_router.register('notes', matching.viewsets.ClientMatchingNoteViewset,
+                                basename='matching_client_notes')
 
 urlpatterns = [
     url(r'^', include(router.urls)),
+    url(r'^', include(client_matching_router.urls)),
     path('users/me/', core.views.UsersMe.as_view(), name='users_me'),
     path('users/auth/', obtain_auth_token, name='users_auth'),
     path('dashboard/summary/', core.views.DashboardSummary.as_view(), name='dashboard_summary'),

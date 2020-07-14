@@ -157,3 +157,26 @@ def test_create_history_for_existing_matching():
     assert matching.history.count() == 1
     assert matching.history.first().step == '1'
     assert matching.history.first().outcome == 'success'
+
+
+def test_client_matchin_history_viewset():
+    agency = AgencyWithProgramsFactory(users=1, clients=1, num_programs=1)
+    config = MatchingConfigFactory(agency=agency)
+
+    matching = ClientMatchingFactory(
+        config=config,
+        program=agency.programs.first(),
+        client=Client.objects.first(),
+    )
+
+    user = agency.user_profiles.first().user
+
+    url = f'/matching/{matching.id}/history/'
+    api_client = APIClient()
+    api_client.force_authenticate(user)
+
+    response = api_client.get(url)
+
+    print(response.data)
+
+    assert response.status_code == 200

@@ -84,3 +84,31 @@ class ClientMatchingWriter(ObjectSerializer):
     class Meta:
         model = ClientMatching
         fields = ('config', 'client', 'program', 'start_date', 'end_date', 'notes', 'history')
+
+
+class ClientMatchingHistoryReader(ObjectSerializer):
+    created_by = CreatedByReader(read_only=True)
+
+    class Meta:
+        model = ClientMatchingHistory
+        fields = ('id', 'object', 'step', 'outcome', 'created_by', 'created_at')
+
+
+class ClientMatchingHistoryWriter(ObjectSerializer):
+    class Meta:
+        model = ClientMatchingHistory
+        fields = ('step', 'outcome')
+
+
+class ClientMatchingNoteReader(ObjectSerializer):
+    created_by = CreatedByReader(read_only=True)
+
+    class Meta:
+        model = ClientMatchingNote
+        fields = ('id', 'object', 'note', 'created_by', 'created_at')
+
+
+class ClientMatchingNoteWriter(ObjectSerializer):
+    class Meta:
+        model = ClientMatchingNote
+        fields = ('note')

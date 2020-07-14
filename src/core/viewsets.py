@@ -25,7 +25,7 @@ class ModelViewSet(viewsets.ModelViewSet):
 
     def get_write_serializer_class(self):
         write_serializer_class = getattr(
-            self, 'write_serializer_class', None) or super().get_read_serializer_class()
+            self, 'write_serializer_class', None) or super().get_write_serializer_class()
         return write_serializer_class
 
     def get_read_serializer(self, *args, **kwargs):
