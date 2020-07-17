@@ -109,8 +109,10 @@ def test_delete_own_survey():
 
     api_client = APIClient()
     api_client.force_authenticate(user1)
+    assert Survey.objects.count() == 1
     response = api_client.delete(f'/surveys/{survey.id}/')
     assert response.status_code == 204
+    assert Survey.objects.count() == 0
 
 
 def test_delete_other_survey():

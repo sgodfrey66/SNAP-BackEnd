@@ -1,7 +1,7 @@
-from django.db import models
+from model_utils.managers import SoftDeletableManager
 
 
-class ProgramObjectManager(models.Manager):
+class ProgramObjectManager(SoftDeletableManager):
     def for_user(self, user):
         if user.is_superuser:
             return super().get_queryset()
@@ -11,7 +11,7 @@ class ProgramObjectManager(models.Manager):
         return user.profile.agency.programs.all()
 
 
-class AgencyProgramConfigObjectManager(models.Manager):
+class AgencyProgramConfigObjectManager(SoftDeletableManager):
     def for_user(self, user):
         if user.is_superuser:
             return super().get_queryset()
