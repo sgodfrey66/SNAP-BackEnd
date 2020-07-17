@@ -1,7 +1,7 @@
-from model_utils.managers import SoftDeletableManager
+from django.db import models
 
 
-class EligibilityObjectManager(SoftDeletableManager):
+class EligibilityObjectManager(models.Manager):
     def for_user(self, user):
         if user.is_superuser:
             return super().get_queryset()
@@ -11,7 +11,7 @@ class EligibilityObjectManager(SoftDeletableManager):
         return user.profile.agency.eligibility.all()
 
 
-class AgencyEligibilityConfigObjectManager(SoftDeletableManager):
+class AgencyEligibilityConfigObjectManager(models.Manager):
     def for_user(self, user):
         if user.is_superuser:
             return super().get_queryset()

@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from model_utils.models import (
     UUIDModel,
-    SoftDeletableModel,
     AutoCreatedField,
     AutoLastModifiedField,
     TimeStampedModel as TSM
@@ -14,7 +13,7 @@ from django.conf import settings
 from rest_framework.authtoken.models import Token
 
 
-class ObjectRoot(UUIDModel, SoftDeletableModel):
+class ObjectRoot(UUIDModel):
     class Meta:
         abstract = True
         ordering = ['created_at']

@@ -1,7 +1,7 @@
-from model_utils.managers import SoftDeletableManager
+from django.db import models
 
 
-class MatchingConfigObjectManager(SoftDeletableManager):
+class MatchingConfigObjectManager(models.Manager):
     def for_user(self, user):
         if user.is_superuser:
             return super().get_queryset()
@@ -11,7 +11,7 @@ class MatchingConfigObjectManager(SoftDeletableManager):
         return super().get_queryset().filter(agency=user.profile.agency)
 
 
-class ClientMatchingObjectManager(SoftDeletableManager):
+class ClientMatchingObjectManager(models.Manager):
     def for_user(self, user):
         if user.is_superuser:
             return super().get_queryset()

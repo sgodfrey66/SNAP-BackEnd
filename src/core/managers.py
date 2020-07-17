@@ -1,7 +1,7 @@
-from model_utils.managers import SoftDeletableManager
+from django.db import models
 
 
-class AgencyObjectManager(SoftDeletableManager):
+class AgencyObjectManager(models.Manager):
     def for_user(self, user):
         if user.is_superuser:
             return super().get_queryset()
