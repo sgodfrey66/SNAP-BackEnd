@@ -115,7 +115,7 @@ class ModelViewSet(viewsets.ModelViewSet):
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
-        response = super().destroy(*args, **kwargs)
+        response = super().destroy(request, *args, **kwargs)
         LogEntry.objects.log_action(
             user_id=request.user.pk,
             content_type_id=ContentType.objects.get_for_model(instance).pk,
