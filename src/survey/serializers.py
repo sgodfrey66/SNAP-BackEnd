@@ -7,11 +7,6 @@ from .validators import SurveySerializerValidator
 class QuestionReader(ObjectSerializer):
     created_by = CreatedByReader(read_only=True)
 
-    usage_count = serializers.SerializerMethodField()
-
-    def get_usage_count(self, obj):
-        return obj.survey_set.count()
-
     class Meta:
         model = Question
         fields = ('id', 'object', 'title', 'description', 'category', 'options', 'other', 'refusable', 'is_public',

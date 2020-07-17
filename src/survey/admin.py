@@ -14,7 +14,7 @@ class ResponseAdmin(admin.ModelAdmin):
 
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
-    list_display = ('title', 'id', )
+    list_display = ('title', 'id', 'usage_count')
 
 
 @admin.register(Survey)

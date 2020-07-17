@@ -29,6 +29,10 @@ class Question(ObjectRoot):
 
     objects = AgencyObjectManager()
 
+    @property
+    def usage_count(self):
+        return self.survey_set.count()
+
     def __str__(self):
         return self.title
 
