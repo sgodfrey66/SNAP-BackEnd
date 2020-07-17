@@ -57,6 +57,26 @@ def test_create_client_matching():
     assert response.status_code == 201
 
 
+def test_patch_client_matching():
+    agency = AgencyWithProgramsFactory(users=1, clients=1, num_programs=1)
+    config = MatchingConfigFactory(agency=agency)
+    matching = ClientMatchingFactory(config=config, program=agency.programs.first(),
+                                     client=Client.objects.first(), start_date='2020-01-01')
+
+    user = agency.user_profiles.first().user
+
+    url = f'/matching/{matching.id}/'
+    api_client = APIClient()
+    api_client.force_authenticate(user)
+
+    response = api_client.patch(url, {
+        'end_date': '2020-02-02',
+    }, format='json')
+    assert response.status_code == 200
+    matching.refresh_from_db()
+    assert matching.end_date == '2020-02-02'
+
+
 def test_create_client_matching_for_invalid_client():
     AgencyWithProgramsFactory(users=1, clients=1, num_programs=1)
     agency = AgencyWithProgramsFactory(users=1, clients=1, num_programs=1)
