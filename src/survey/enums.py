@@ -8,3 +8,4 @@ class QuestionCategory(models.TextChoices):
     GRID = "grid", "grid"
     NUMBER = "number", "number"
     TEXT = "text", "text"
+    TEXTAREA = "textarea", "textarea"

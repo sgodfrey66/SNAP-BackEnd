@@ -1,3 +1,4 @@
+from rest_framework import serializers
 from core.serializers import ContentObjectRelatedField, ObjectSerializer, CreatedByReader
 from .models import Survey, Question, Response, Answer
 from .validators import SurveySerializerValidator
@@ -9,15 +10,25 @@ class QuestionReader(ObjectSerializer):
     class Meta:
         model = Question
         fields = ('id', 'object', 'title', 'description', 'category', 'options', 'other', 'refusable', 'is_public',
-                  'created_by', 'created_at', 'modified_at')
+                  'created_by', 'usage_count', 'created_at', 'modified_at')
 
 
-class QuestionWriter(QuestionReader):
-    pass
+class QuestionWriter(ObjectSerializer):
+    class Meta:
+        model = Question
+        fields = ('title', 'description', 'category', 'options', 'other', 'refusable', 'is_public')
 
 
 class AnswerReader(ObjectSerializer):
-    question = QuestionReader()
+    class AnswerQuestionReader(ObjectSerializer):
+        created_by = CreatedByReader(read_only=True)
+
+        class Meta:
+            model = Question
+            fields = ('id', 'object', 'title', 'description', 'category', 'options', 'other', 'refusable', 'is_public',
+                      'created_by', 'created_at', 'modified_at')
+
+    question = AnswerQuestionReader()
 
     class Meta:
         model = Answer
@@ -25,8 +36,6 @@ class AnswerReader(ObjectSerializer):
 
 
 class AnswerWriter(ObjectSerializer):
-    #    response = serializers.ReadOnlyField()
-
     class Meta:
         model = Answer
         fields = ('question', 'value')

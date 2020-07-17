@@ -103,6 +103,28 @@ def test_update_own_survey_by_user1():
     assert response.data['name'] == 'Survey B'
 
 
+def test_delete_own_survey():
+    agency1, agency2, user1, user2, client1, client2 = setup_2_agencies()
+    survey = Survey.objects.create(name='Survey A', definition={'items': []}, created_by=user1)
+
+    api_client = APIClient()
+    api_client.force_authenticate(user1)
+    assert Survey.objects.count() == 1
+    response = api_client.delete(f'/surveys/{survey.id}/')
+    assert response.status_code == 204
+    assert Survey.objects.count() == 0
+
+
+def test_delete_other_survey():
+    agency1, agency2, user1, user2, client1, client2 = setup_2_agencies()
+    survey = Survey.objects.create(name='Survey A', definition={'items': []}, created_by=user1)
+
+    api_client = APIClient()
+    api_client.force_authenticate(user2)
+    response = api_client.delete(f'/surveys/{survey.id}/')
+    assert response.status_code == 404
+
+
 def test_create_question_by_user1():
     agency1, agency2, user1, user2, client1, client2 = setup_2_agencies()
     url = '/questions/'
