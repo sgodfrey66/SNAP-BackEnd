@@ -10,8 +10,6 @@ class Agency(ObjectRoot):
         ordering = ['name']
 
     name = models.CharField(max_length=64)
-    programs = models.ManyToManyField('program.Program', related_name='agencies',
-                                      through='program.AgencyProgramConfig')
     eligibility = models.ManyToManyField(
         'eligibility.Eligibility', related_name='eligibility', through='eligibility.AgencyEligibilityConfig')
 

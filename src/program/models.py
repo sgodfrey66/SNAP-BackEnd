@@ -7,7 +7,7 @@ from client.models import Client
 from survey.models import Survey, Response
 from .enums import EnrollmentStatus, ProgramEligibilityStatus
 from .managers import (
-    ProgramObjectManager, AgencyProgramConfigObjectManager,
+    ProgramObjectManager,
     ProgramEligibilityObjectManager, EnrollmentObjectManager,
 )
 
@@ -17,6 +17,7 @@ class Program(ObjectRoot):
         db_table = 'program'
         ordering = ['name']
 
+    agency = models.ForeignKey(Agency, null=True, related_name='programs', on_delete=models.SET_NULL)
     name = models.CharField(max_length=64)
     description = models.TextField(blank=True, default='')
 
@@ -31,38 +32,6 @@ class Program(ObjectRoot):
 
     def __str__(self):
         return self.name
-
-
-class AgencyProgramConfig(ObjectRoot):
-    class Meta:
-        ordering = ['-created_at']
-
-    agency = models.ForeignKey(Agency, on_delete=models.CASCADE)
-    program = models.ForeignKey(Program, on_delete=models.CASCADE)
-
-    agency_enrollment_entry_survey = models.ForeignKey(
-        Survey, related_name='agency_programs_where_is_entry_survey', null=True, blank=True, on_delete=models.SET_NULL)
-    agency_enrollment_update_survey = models.ForeignKey(
-        Survey, related_name='agency_programs_where_is_update_survey', null=True, blank=True, on_delete=models.SET_NULL)
-    agency_enrollment_exit_survey = models.ForeignKey(
-        Survey, related_name='agency_programs_where_is_exit_survey', null=True, blank=True, on_delete=models.SET_NULL)
-
-    objects = AgencyProgramConfigObjectManager()
-
-    @property
-    def enrollment_entry_survey(self):
-        return self.agency_enrollment_entry_survey or self.program.enrollment_entry_survey
-
-    @property
-    def enrollment_update_survey(self):
-        return self.agency_enrollment_update_survey or self.program.enrollment_update_survey
-
-    @property
-    def enrollment_exit_survey(self):
-        return self.agency_enrollment_exit_survey or self.program.enrollment_exit_survey
-
-    def __str__(self):
-        return f"{self.program.name}@{self.agency.name}"
 
 
 class Enrollment(ObjectRoot):

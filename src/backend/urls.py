@@ -56,9 +56,6 @@ router.register('eligibility/clients', eligibility.viewsets.ClientEligibilityVie
                 basename='eligibility_clients')
 router.register('eligibility', eligibility.viewsets.EligibilityViewset,
                 basename='eligibility')
-
-router.register('programs/agency_configs', program.viewsets.AgencyProgramConfigViewset,
-                basename='agency_programs_config')
 router.register('programs/enrollments', program.viewsets.EnrollmentViewset,
                 basename='enrollment')
 router.register('programs/eligibility', program.viewsets.ProgramEligibilityViewset,

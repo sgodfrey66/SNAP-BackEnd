@@ -44,6 +44,8 @@ def test_create_client_matching():
     agency = AgencyWithProgramsFactory(users=1, clients=1, num_programs=1)
     config = MatchingConfigFactory(agency=agency)
 
+    print(agency.programs.all())
+
     user = agency.user_profiles.first().user
 
     url = '/matching/'

@@ -1,11 +1,10 @@
 from core.viewsets import ModelViewSet
 from core.permissions import IsAdmin, IsAgencyMember, IsAgencyMemberReadOnly
 from core.validation import validate_fields_with_rules
-from .filters import AgencyProgramConfigViewsetFilter, ProgramEligibilityViewsetFilter, EnrollmentViewsetFilter
-from .models import Program, AgencyProgramConfig, ProgramEligibility, Enrollment
+from .filters import ProgramViewsetFilter, ProgramEligibilityViewsetFilter, EnrollmentViewsetFilter
+from .models import Program, ProgramEligibility, Enrollment
 from .serializers import (
     ProgramReader, ProgramWriter,
-    AgencyProgramConfigReader, AgencyProgramConfigWriter,
     ProgramEligibilityReader, ProgramEligibilityWriter,
     EnrollmentReader, EnrollmentWriter,
 )
@@ -16,24 +15,10 @@ class ProgramViewset(ModelViewSet):
     read_serializer_class = ProgramReader
     write_serializer_class = ProgramWriter
     permission_classes = [IsAdmin | IsAgencyMemberReadOnly]
+    filterset_class = ProgramViewsetFilter
 
     def get_queryset(self):
         return Program.objects.for_user(self.request.user)
-
-    def perform_create(self, serializer):
-        serializer.save(created_by=self.request.user)
-
-
-class AgencyProgramConfigViewset(ModelViewSet):
-    queryset = AgencyProgramConfig.objects.all()
-    read_serializer_class = AgencyProgramConfigReader
-    write_serializer_class = AgencyProgramConfigWriter
-    permission_classes = [IsAdmin | IsAgencyMemberReadOnly]
-    filterset_class = AgencyProgramConfigViewsetFilter
-    ordering_fields = ['program__name']
-
-    def get_queryset(self):
-        return AgencyProgramConfig.objects.for_user(self.request.user)
 
     def perform_create(self, serializer):
         serializer.save(created_by=self.request.user)
