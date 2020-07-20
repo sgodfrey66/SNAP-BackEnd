@@ -1,3 +1,4 @@
+import datetime
 from rest_framework.test import APIClient
 from program.factories import AgencyWithProgramsFactory
 from client.models import Client
@@ -74,7 +75,7 @@ def test_patch_client_matching():
     }, format='json')
     assert response.status_code == 200
     matching.refresh_from_db()
-    assert matching.end_date == '2020-02-02'
+    assert matching.end_date == datetime.date(2020, 2, 2)
 
 
 def test_create_client_matching_for_invalid_client():
