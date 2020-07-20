@@ -24,7 +24,7 @@ class Question(ObjectRoot):
     other = models.BooleanField(default=False)
     refusable = models.BooleanField(default=False)
     rows = models.IntegerField(null=True, blank=True)
-    columns = JSONField(null=True, blank=True)
+    columns = JsonYamlField(null=True, blank=True)
     is_public = models.BooleanField(default=False)
 
     objects = AgencyObjectManager()

@@ -10,13 +10,13 @@ class QuestionReader(ObjectSerializer):
     class Meta:
         model = Question
         fields = ('id', 'object', 'title', 'description', 'category', 'options', 'other', 'refusable', 'is_public',
-                  'created_by', 'usage_count', 'created_at', 'modified_at')
+                  'rows', 'columns', 'created_by', 'usage_count', 'created_at', 'modified_at')
 
 
 class QuestionWriter(ObjectSerializer):
     class Meta:
         model = Question
-        fields = ('title', 'description', 'category', 'options', 'other', 'refusable', 'is_public')
+        fields = ('title', 'description', 'category', 'options', 'other', 'refusable', 'is_public', 'rows', 'columns')
 
 
 class AnswerReader(ObjectSerializer):
