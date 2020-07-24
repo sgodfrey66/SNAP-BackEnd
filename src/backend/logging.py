@@ -37,6 +37,10 @@ def setup_logging(log_level: str, logs_filename: str):
                 'class': 'logging.StreamHandler',
                 'formatter': 'default',
             },
+            'json_console': {
+                'class': 'logging.StreamHandler',
+                'formatter': 'json_formatter',
+            },
             'colored_console': {
                 'class': 'colorlog.StreamHandler',
                 'formatter': 'colored',
@@ -63,13 +67,6 @@ def setup_logging(log_level: str, logs_filename: str):
                 'level': 'WARNING',
                 'handlers': ['colored_console'],  # 'sentry'],
             },
-            # Our application code
-            'app': {
-                'level': log_level.upper(),
-                'handlers': ['colored_console', 'file_handler'],  # , 'sentry'],
-                # Avoid double logging because of root logger
-                'propagate': False,
-            },
             # Prevent noisy modules from logging to Sentry
             'noisy_module': {
                 'level': 'ERROR',
@@ -77,8 +74,15 @@ def setup_logging(log_level: str, logs_filename: str):
                 'propagate': False,
             },
             'django': {
-                'level': 'WARNING',
-                'handlers': ['file_handler'],
+                'level': 'INFO',
+                'handlers': ['json_console', 'file_handler'],
+            },
+            # Our application code
+            'django.app': {
+                'level': log_level.upper(),
+                'handlers': ['json_console' or 'colored_console', 'file_handler'],  # , 'sentry'],
+                # Avoid double logging because of root logger
+                'propagate': False,
             },
             # Default runserver request logging
             'django.server': DEFAULT_LOGGING['loggers']['django.server'],
@@ -86,7 +90,7 @@ def setup_logging(log_level: str, logs_filename: str):
             # Toggle SQL query logging
             'django.db.backends': {
                 'level': 'DEBUG',
-                'handlers': ['colored_console_db'],
+                'handlers': ['json_console' or 'colored_console_db'],
                 'propagate': False,
             },
         },

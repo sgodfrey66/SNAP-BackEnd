@@ -6,7 +6,7 @@ from django.db import models
 from django.conf import settings
 
 
-logger = logging.getLogger('app')
+logger = logging.getLogger('django.app')
 
 
 def instance_to_dict(instance):
