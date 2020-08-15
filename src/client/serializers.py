@@ -8,8 +8,9 @@ class ClientReader(ObjectSerializer):
 
     class Meta:
         model = Client
+
         fields = ('id', 'object', 'first_name', 'middle_name', 'last_name',
-                  'dob', 'created_at', 'modified_at', 'created_by')
+                  'dob', 'agency_assoc', 'created_at', 'modified_at', 'created_by')
 
 
 class ClientWriter(ClientReader):

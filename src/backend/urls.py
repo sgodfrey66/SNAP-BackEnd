@@ -30,6 +30,8 @@ import note.viewsets
 import matching.viewsets
 from core.logging import logger
 
+import security.viewsets
+
 schema_view = get_schema_view(
     openapi.Info(
         title="GEORGIA API",
@@ -49,6 +51,9 @@ router.register('notes', note.viewsets.NoteViewset, basename='note')
 router.register('surveys', survey.viewsets.SurveyViewset, basename='survey')
 router.register('questions', survey.viewsets.QuestionViewset, basename='question')
 router.register('responses', survey.viewsets.ResponseViewset, basename='response')
+
+# SecurityGroupUserAgency
+router.register('useragencies', security.viewsets.SecurityGroupUserAgencyViewset, basename='useragency')
 
 router.register('eligibility/agency_configs', eligibility.viewsets.AgencyEligibilityConfigViewset,
                 basename='agency_eligibility_config')

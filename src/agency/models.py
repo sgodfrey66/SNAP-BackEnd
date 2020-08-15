@@ -10,6 +10,10 @@ class Agency(ObjectRoot):
         ordering = ['name']
 
     name = models.CharField(max_length=64)
+
+    # Reference field for internal cross-reference
+    ref_id = models.IntegerField(unique=True, null=True)
+
     eligibility = models.ManyToManyField(
         'eligibility.Eligibility', related_name='eligibility', through='eligibility.AgencyEligibilityConfig')
 
@@ -25,7 +29,8 @@ class AgencyClient(models.Model):
     class Meta:
         db_table = 'agency_client'
 
-    client = models.ForeignKey(
-        Client, related_name='agency_clients', on_delete=models.PROTECT)
-    agency = models.ForeignKey(
-        Agency, related_name='agency_clients', on_delete=models.PROTECT)
+    client = models.ForeignKey(Client, related_name='agency_clients',
+                               on_delete=models.PROTECT)
+    agency_ref = models.ForeignKey(Agency, to_field='ref_id', db_column='agency_ref',
+                                   null=True, on_delete=models.CASCADE)
+    desc = models.CharField(max_length=125, null=True)

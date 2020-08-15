@@ -1,6 +1,8 @@
 from django.db import models
 from agency.models import Agency
 from program.models import Program
+from django.contrib.auth.models import Group
+from django.contrib.auth.models import User
 
 
 class SecurityGroup(models.Model):
@@ -31,3 +33,18 @@ class SecurityGroupAgencyConfig(models.Model):
 
     def __str__(self):
         return f"{self.agency.name}@{self.security_group.name}"
+
+
+# A class for user security groups by agency
+class SecurityGroupUserAgency(models.Model):
+    class Meta:
+        db_table = 'security_group_user_agency'
+
+    desc = models.CharField(max_length=125, null=True)
+    agency_ref = models.ForeignKey(Agency, to_field='ref_id', db_column='agency_ref',
+                                   null=True, on_delete=models.CASCADE)
+    user_ref = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    group_ref = models.ForeignKey(Group, on_delete=models.CASCADE, null=True)
+
+    def __str__(self):
+        return self.desc

@@ -25,7 +25,9 @@ class BaseConfiguration(Configuration):
     # SECURITY WARNING: don't run with debug turned on in production!
     DEBUG = values.BooleanValue(False)
 
-    ALLOWED_HOSTS = values.ListValue([])
+    # ALLOWED_HOSTS = values.ListValue([])
+
+    ALLOWED_HOSTS = '*'
 
     # Application definition
 
@@ -52,7 +54,7 @@ class BaseConfiguration(Configuration):
         'eligibility',
         'security',
         'note',
-        'matching',
+        'matching'
     ]
 
     MIDDLEWARE = [
@@ -88,7 +90,19 @@ class BaseConfiguration(Configuration):
 
     WSGI_APPLICATION = 'backend.wsgi.application'
 
-    DATABASES = values.DatabaseURLValue()
+    # DATABASES = values.DatabaseURLValue()
+
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'SNAPData',
+            'USER': 'stephengodfrey',
+            'PASSWORD': '',
+            'HOST': '127.0.0.1',
+            'PORT': '5432',
+        }
+    }
+
 
     # Password validation
     # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
